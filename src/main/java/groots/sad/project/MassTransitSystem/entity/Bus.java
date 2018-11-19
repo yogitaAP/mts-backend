@@ -6,19 +6,17 @@ public class Bus {
     Route route;
     private int passengerCapacity;
     private int riders;
-    private int fuelCapacity;
     private int averageSpeed;
     private int busTime;
     private int busAt;
 
-    public Bus(String id, Route route, int passengerCapacity, int riders, int fuelCapacity, int averageSpeed, int busTime, int busAt) {
+    public Bus(String id, Route route, int passengerCapacity, int averageSpeed, int busAt) {
         this.id = id;
         this.route = route;
         this.passengerCapacity = passengerCapacity;
-        this.riders = riders;
-        this.fuelCapacity = fuelCapacity;
+        this.riders = 0;
         this.averageSpeed = averageSpeed;
-        this.busTime = busTime;
+        this.busTime = 0;
         this.busAt = busAt;
     }
 
@@ -60,6 +58,10 @@ public class Bus {
 
     public int getBusAt() {
         return busAt;
+    }
+
+    public void setBusAt(int busAt) {
+        this.busAt = busAt % route.getStops().size();
     }
 
     private double distanceBetweenTwoStops() {

@@ -9,13 +9,11 @@ public class BusStop {
     private int waitingPassenger;
     private int transfersPassenger;
 
-    public BusStop(String id, String name, int passengerCapacity, Location location, int waitingPassenger, int transfersPassenger) {
+    public BusStop(String id, String name, int passengerCapacity, Location location) {
         this.id = id;
         this.name = name;
         this.passengerCapacity = passengerCapacity;
         this.location = location;
-        this.waitingPassenger = waitingPassenger;
-        this.transfersPassenger = transfersPassenger;
     }
 
     public String getId() {
@@ -42,12 +40,12 @@ public class BusStop {
         return transfersPassenger;
     }
 
-    public void updateWatingPassenger(){
-
+    public void updateWatingPassenger(int waitingPassenger){
+        this.waitingPassenger=waitingPassenger;
     }
 
-    public void updateTransfersPassenger(){
-
+    public void updateTransfersPassenger(int transfersPassenger){
+        this.transfersPassenger = transfersPassenger;
     }
 
 }
