@@ -48,11 +48,31 @@ public class SystemEfficiencyCalculator {
                 .sum();
     }
 
-    public void setConstants(double kSpeed, double kCapacity, double kWaiting, double kBuses, double kCombined) {
+
+    // Using builder pattern so that we can set all the values at a time.
+
+    public SystemEfficiencyCalculator setkSpeed(double kSpeed) {
         this.kSpeed = kSpeed;
+        return this;
+    }
+
+    public SystemEfficiencyCalculator setkCapacity(double kCapacity) {
         this.kCapacity = kCapacity;
+        return this;
+    }
+
+    public SystemEfficiencyCalculator setkWaiting(double kWaiting) {
         this.kWaiting = kWaiting;
+        return this;
+    }
+
+    public SystemEfficiencyCalculator setkBuses(double kBuses) {
         this.kBuses = kBuses;
+        return this;
+    }
+
+    public SystemEfficiencyCalculator setkCombined(double kCombined) {
         this.kCombined = kCombined;
+        return this;
     }
 }

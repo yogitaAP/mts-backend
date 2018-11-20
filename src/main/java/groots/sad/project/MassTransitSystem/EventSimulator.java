@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @Component
 public class EventSimulator {
@@ -19,6 +20,9 @@ public class EventSimulator {
     private static List<Route> routes = new ArrayList<>();
     private static List<Event> eventQueue = new ArrayList<>();
     private static EventSimulator eventSimulator = new EventSimulator();
+    private static int logicalTime;
+
+    private static final String MOVE_BUS = "move_bus";
 
     private EventSimulator() {
 
@@ -26,6 +30,7 @@ public class EventSimulator {
         busStops = new ArrayList<>();
         routes = new ArrayList<>();
         eventQueue = new ArrayList<>();
+        logicalTime = 0;
     }
 
     public static EventSimulator getInstance(){
@@ -68,11 +73,15 @@ public class EventSimulator {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        busManager.prepareIdToBusMap();
     }
 
     private static void addBus(String id, String routeId, int location, int passengerCapacity, int speed) {
 
-        Route route = routes.stream().filter(route1 -> route1.getId().equals(routeId)).findFirst().get();
+        Route route = routes.stream()
+                .filter(route1 -> route1.getId().equals(routeId))
+                .findFirst()
+                .get();
         Bus bus = new Bus(id, route, passengerCapacity, speed, location);
         bus.setBusAt(location);
         busManager.addBus(bus);
@@ -80,7 +89,10 @@ public class EventSimulator {
 
     static void addStopInRoute(String routeId, String stopId, List<Route> routes, List<BusStop> busStops) {
 
-        Route route = routes.stream().filter(route1 -> route1.getId().equals(routeId)).findFirst().get();
+        Route route = routes.stream()
+                .filter(route1 -> route1.getId().equals(routeId))
+                .findFirst()
+                .get();
         route.extendRoute(busStops, stopId);
     }
 
@@ -91,4 +103,14 @@ public class EventSimulator {
     public List<BusStop> getBusStops() {
         return busStops;
     }
+
+    public List<Event> prepareEvents() {
+
+        return eventQueue.stream()
+                .filter(event -> event.getTime() == logicalTime)
+                .filter(event -> event.getType().equals(MOVE_BUS))
+                .collect(Collectors.toList());
+    }
+
+
 }

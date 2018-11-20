@@ -36,8 +36,12 @@ public class Bus {
         return riders;
     }
 
-    public void setRiders(int riders) {
-        this.riders = riders;
+    public void increaseRidersOnBus(int riders) {
+        this.riders += riders;
+    }
+
+    public void decreaseRidersOnBus(int riders) {
+        this.riders -= riders;
     }
 
     public int getAverageSpeed() {
@@ -82,15 +86,26 @@ public class Bus {
         return travelTime;
     }
 
-    public String displayInfo(){
+    public String displayInfo() {
         return "";
     }
 
-    public int computeBusCost(){
+    public int computeBusCost() {
         return 0;
     }
 
-    public void changeRoute(){
+    public void changeRoute() {
 
     }
+
+    public void moveNextStop() {
+
+        busAt = (busAt + 1) % route.getStops().size();
+    }
+
+    public BusStop getNextStop() {
+
+        return route.getNextStop(busAt);
+    }
+
 }
