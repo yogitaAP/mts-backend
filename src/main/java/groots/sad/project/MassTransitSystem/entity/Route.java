@@ -20,7 +20,7 @@ public class Route {
         return id;
     }
 
-    public void addBusStop(BusStop busStop){
+    private void addBusStop(BusStop busStop){
         stops.add(busStop);
     }
 
@@ -42,5 +42,11 @@ public class Route {
 
     public void modifyStopSequence(){
 
+    }
+
+    public void extendRoute(List<BusStop> busStops,String stopId){
+
+        BusStop busStop = busStops.stream().filter(busStop1 -> busStop1.getId().equals(stopId)).findFirst().get();
+        addBusStop(busStop);
     }
 }

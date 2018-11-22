@@ -14,10 +14,15 @@ public class BusManager {
     private List<Bus> buses;
     private Map<String, Integer> busStartTime;
     private Map<String, Bus> idToBusMap;
+    private static BusManager busManager = new BusManager();
 
-    public BusManager() {
+    private BusManager() {
 
         this.buses = new ArrayList<>();
+    }
+
+    public static BusManager getInstance(){
+        return busManager;
     }
 
     public void addBus(Bus bus) {
