@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("mts/bus")
@@ -27,5 +28,11 @@ public class BusController {
     public List<Bus> getAllBuses(){
 
         return busManagementService.getAllBuses();
+    }
+
+    @GetMapping("/displayinfo")
+    public List<Map<String,String>> getBusDisplayInfo(){
+
+        return busManagementService.getDisplayInfo();
     }
 }

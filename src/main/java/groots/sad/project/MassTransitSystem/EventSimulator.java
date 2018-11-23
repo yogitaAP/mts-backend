@@ -74,6 +74,7 @@ public class EventSimulator {
             e.printStackTrace();
         }
         busManager.prepareIdToBusMap();
+        busManager.prepareBusStartTimeData(eventQueue);
     }
 
     private static void addBus(String id, String routeId, int location, int passengerCapacity, int speed) {
@@ -112,5 +113,17 @@ public class EventSimulator {
                 .collect(Collectors.toList());
     }
 
+    public void increaseLogicalTime(){
+
+        logicalTime++;
+    }
+
+    public void updateEvents(Event eventCreated) {
+
+        List<Event> eventsToReAdd = eventQueue.stream().filter(event -> event.getTime() > logicalTime).collect(Collectors.toList());
+        eventQueue.clear();
+        eventQueue.addAll(eventsToReAdd);
+        eventQueue.add(eventCreated);
+    }
 
 }

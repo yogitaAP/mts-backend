@@ -38,7 +38,7 @@ public class SystemEfficiencyCalculator {
 
     private double calculateCostForAllBuses(List<Bus> buses) {
         return buses.stream()
-                .mapToDouble(bus -> kSpeed * bus.getAverageSpeed() + kCapacity * bus.getPassengerCapacity())
+                .mapToDouble(bus -> bus.computeBusCost(kSpeed, kCapacity))
                 .sum();
     }
 
