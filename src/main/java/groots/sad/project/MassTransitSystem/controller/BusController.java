@@ -23,6 +23,12 @@ public class BusController {
         busManagementService.moveBus();
     }
 
+    @GetMapping("/replay")
+    public void replay(){
+
+        busManagementService.replay();
+    }
+
     @GetMapping("/list")
     public List<Bus> getAllBuses(){
 
