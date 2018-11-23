@@ -126,4 +126,25 @@ public class EventSimulator {
         eventQueue.add(eventCreated);
     }
 
+    public static void replay(History history){
+
+        busStops.forEach(stop -> {
+
+            if (stop.getId().equals(history.getBusStopId())) {
+                stop.setWaitingPassenger(history.getStopPassengers());
+            }
+        });
+
+        for (int i = 0; i < eventQueue.size(); i++) {
+            if(eventQueue.get(i).getBusId().equals(history.getBusStopId()) ) {
+                eventQueue.get(i).setTime(history.getBusTime());
+            }
+        }
+        eventQueue.forEach(event->{
+            if(event.getBusId().equals(history.getBusId())){
+                event.setTime(history.getBusTime());
+            }
+        });
+        busManager.replay(history.getBusId(), history.getBusTime(), history.getBusRiders());
+    }
 }

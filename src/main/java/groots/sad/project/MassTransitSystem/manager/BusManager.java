@@ -3,6 +3,7 @@ package groots.sad.project.MassTransitSystem.manager;
 import groots.sad.project.MassTransitSystem.comparator.LowRunningTimeComparator;
 import groots.sad.project.MassTransitSystem.entity.Bus;
 import groots.sad.project.MassTransitSystem.entity.Event;
+import groots.sad.project.MassTransitSystem.entity.History;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,6 +62,17 @@ public class BusManager {
 
         idToBusMap = new HashMap<>();
         buses.forEach(bus -> idToBusMap.put(bus.getId(), bus));
+    }
+
+    public void replay(String busId,int busTime, int busRiders)
+    {
+        for (int i = 0; i < buses.size(); i++) {
+            if(buses.get(i).getId().equals(busId) )
+            {
+                buses.get(i).setBusTime(busTime);
+                buses.get(i).setRiders(busRiders);
+            }
+        }
     }
 
     public List<Bus> getAllBuses(){

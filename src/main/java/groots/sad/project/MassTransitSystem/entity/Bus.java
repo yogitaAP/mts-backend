@@ -57,6 +57,11 @@ public class Bus {
         this.busAt = busAt % route.getStops().size();
     }
 
+
+    public void setRiders(int riders) {
+        this.riders = riders;
+    }
+
     private double distanceBetweenTwoStops() {
 
         BusStop currentStop = route.getCurrentStop(busAt);
@@ -85,6 +90,10 @@ public class Bus {
 
     public void changeRoute() {
 
+    }
+
+    public int getBusTime() {
+        return busTime;
     }
 
     public void moveNextStop() {

@@ -23,4 +23,8 @@ public class Event {
     public String getType() {
         return type;
     }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
 }
