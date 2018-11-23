@@ -11,11 +11,7 @@ import groots.sad.project.MassTransitSystem.manager.EventHistoryManager;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 
 @Service
@@ -25,6 +21,7 @@ public class BusManagementService {
     private EventSimulator eventSimulator;
     private BusManager busManager;
     private LinkedList<Bus> busesToBeProcessed;
+    private Map<String, LinkedList<Map<String, String>>> updateBusEvents;
     Stack<History> history = new Stack<>();
 
 
@@ -32,6 +29,7 @@ public class BusManagementService {
         this.eventSimulator = EventSimulator.getInstance();
         busManager = eventSimulator.getBusManager();
         busesToBeProcessed = new LinkedList<>();
+        updateBusEvents = new HashMap<>();
     }
 
     public void moveBus() {
@@ -47,10 +45,9 @@ public class BusManagementService {
         }
 
         Bus bus = busesToBeProcessed.getFirst();
-        //processBusStateChangeEvents(bus);
         busManager.moveBus(bus);
-        BusStop busStop = bus.getCurrentStop();
         processBusStateChangeEvents(bus);
+        BusStop busStop = bus.getCurrentStop();
         addEventToHistory(bus, busStop);
         PassengerManager.managePassengersArrivingOnStop(busStop);
         PassengerManager.updatePassengersLeaveBus(bus, busStop);
@@ -61,7 +58,10 @@ public class BusManagementService {
 
     private void processBusStateChangeEvents(Bus bus) {
 
-        // need to discuss with you guys
+        LinkedList<Map<String, String>> busInfoList = updateBusEvents.getOrDefault(bus.getId(),new LinkedList<>());
+        busInfoList.forEach(
+                busInfo -> busManager.updateBusInfo(busInfo)
+        );
     }
 
     private void addEventToHistory(Bus bus, BusStop stop) {
@@ -91,5 +91,18 @@ public class BusManagementService {
         List<Map<String, String>> displayInfoList = new ArrayList<>();
         buses.forEach(bus -> displayInfoList.add(bus.computeDisplayInfo()));
         return displayInfoList;
+    }
+
+    public void updateBusInfo(Map<String, String> busInfo) {
+
+        String busId = busInfo.get("busId");
+        if (updateBusEvents.containsKey(busId)) {
+            LinkedList<Map<String, String>> busInfoList = updateBusEvents.get(busId);
+            busInfoList.add(busInfo);
+        } else {
+            LinkedList<Map<String, String>> busInfoList = new LinkedList<>();
+            busInfoList.add(busInfo);
+            updateBusEvents.put(busId, busInfoList);
+        }
     }
 }

@@ -2,16 +2,16 @@ package groots.sad.project.MassTransitSystem;
 
 import groots.sad.project.MassTransitSystem.entity.*;
 import groots.sad.project.MassTransitSystem.manager.BusManager;
-import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-@Component
 public class EventSimulator {
 
 
@@ -31,17 +31,45 @@ public class EventSimulator {
         routes = new ArrayList<>();
         eventQueue = new ArrayList<>();
         logicalTime = 0;
+        readData();
+        readPassengerFrequencyData();
     }
 
     public static EventSimulator getInstance(){
         return eventSimulator;
     }
 
-    private static void readData(String fileName) {
+    private  static void readPassengerFrequencyData(){
+        final String DELIMITER = ",";
+        try {
+            File file = ResourceUtils.getFile("classpath:files/test_evening_distribution.txt");
+            Scanner takeCommand = new Scanner(file);
+            String[] tokens;
+            do {
+                String userCommandLine = takeCommand.nextLine();
+                tokens = userCommandLine.split(DELIMITER);
+                final int [] intTokens = Arrays.stream(tokens).mapToInt(Integer::parseInt).toArray();
+                busStops.forEach(stop -> {
+                    if(stop.getId().equals(Integer.toString(intTokens[0]))){
+                        stop.setrArriveHigh(intTokens[1]).setrArriveLow(intTokens[2]).setrOffHigh(intTokens[3])
+                                .setrOffLow(intTokens[4]).setrOnHigh(intTokens[5]).setrOnLow(intTokens[6])
+                                .setrDepartHigh(intTokens[7]).setrDepartLow(intTokens[8]);
+                    }
+                });
+
+            } while (takeCommand.hasNextLine());
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void readData() {
 
         final String DELIMITER = ",";
         try {
-            Scanner takeCommand = new Scanner(new File(fileName));
+            File file = ResourceUtils.getFile("classpath:files/test0_instruction_demo.txt");
+            Scanner takeCommand = new Scanner(file);
             String[] tokens;
             do {
                 String userCommandLine = takeCommand.nextLine();
@@ -146,5 +174,9 @@ public class EventSimulator {
             }
         });
         busManager.replay(history.getBusId(), history.getBusTime(), history.getBusRiders());
+    }
+
+    public List<Route> getRoutes() {
+        return routes;
     }
 }

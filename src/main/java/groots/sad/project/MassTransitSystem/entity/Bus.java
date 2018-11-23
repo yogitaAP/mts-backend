@@ -88,8 +88,14 @@ public class Bus {
         return kSpeed * averageSpeed + kCapacity * passengerCapacity;
     }
 
-    public void changeRoute() {
+    public void changeRoute(Route route, int nextStop) {
 
+        this.route = route;
+        busAt = (nextStop + route.getStops().size() - 1) % route.getStops().size();
+    }
+
+    public void setPassengerCapacity(int passengerCapacity) {
+        this.passengerCapacity = passengerCapacity;
     }
 
     public int getBusTime() {
