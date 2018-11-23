@@ -74,6 +74,7 @@ public class EventSimulator {
             e.printStackTrace();
         }
         busManager.prepareIdToBusMap();
+        busManager.prepareBusStartTimeData(eventQueue);
     }
 
     private static void addBus(String id, String routeId, int location, int passengerCapacity, int speed) {
@@ -112,22 +113,38 @@ public class EventSimulator {
                 .collect(Collectors.toList());
     }
 
+    public void increaseLogicalTime(){
+
+        logicalTime++;
+    }
+
+    public void updateEvents(Event eventCreated) {
+
+        List<Event> eventsToReAdd = eventQueue.stream().filter(event -> event.getTime() > logicalTime).collect(Collectors.toList());
+        eventQueue.clear();
+        eventQueue.addAll(eventsToReAdd);
+        eventQueue.add(eventCreated);
+    }
+
     public static void replay(History history){
 
-        for (int i = 0; i < busStops.size(); i++) {
-            if(busStops.get(i).getId().equals(history.getBusStopId()) )
-            {
-                busStops.get(i).setWaitingPassenger(history.getStopPassengers());
+        busStops.forEach(stop -> {
+
+            if (stop.getId().equals(history.getBusStopId())) {
+                stop.setWaitingPassenger(history.getStopPassengers());
             }
-        }
+        });
 
         for (int i = 0; i < eventQueue.size(); i++) {
-            if(eventQueue.get(i).getBusId().equals(history.getBusStopId()) )
-            {
+            if(eventQueue.get(i).getBusId().equals(history.getBusStopId()) ) {
                 eventQueue.get(i).setTime(history.getBusTime());
             }
         }
-
+        eventQueue.forEach(event->{
+            if(event.getBusId().equals(history.getBusId())){
+                event.setTime(history.getBusTime());
+            }
+        });
         busManager.replay(history.getBusId(), history.getBusTime(), history.getBusRiders());
     }
 }

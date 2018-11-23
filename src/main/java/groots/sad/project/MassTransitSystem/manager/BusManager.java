@@ -33,7 +33,7 @@ public class BusManager {
 
     public void moveBus(Bus bus) {
 
-        bus.displayInfo();
+        bus.moveNextStop();
     }
 
     public List<Bus> selectBusesToMove(List<Event> events) {
@@ -77,5 +77,10 @@ public class BusManager {
 
     public List<Bus> getAllBuses(){
         return buses;
+    }
+
+    public Event createNextMoveBusEvent(Bus bus){
+
+        return bus.createNextMoveEvent();
     }
 }
