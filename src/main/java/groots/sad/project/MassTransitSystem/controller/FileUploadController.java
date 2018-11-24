@@ -1,4 +1,4 @@
-package groots.sad.project.MassTransitSystem.controller;
+package groots.sad.project.MassTransitSystem.Controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
