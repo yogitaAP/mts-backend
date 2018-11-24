@@ -1,4 +1,4 @@
-package groots.sad.project.MassTransitSystem.controller;
+package groots.sad.project.MassTransitSystem.Controller;
 
 import groots.sad.project.MassTransitSystem.service.SystemEfficiencyService;
 import org.springframework.beans.factory.annotation.Autowired;
