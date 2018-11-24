@@ -136,4 +136,8 @@ public class BusStop {
     public void setTransfersPassenger(int transfersPassenger) {
         this.transfersPassenger = transfersPassenger;
     }
+
+    public void setWaitingPassenger(int waitingPassenger) {
+        this.waitingPassenger = waitingPassenger;
+    }
 }

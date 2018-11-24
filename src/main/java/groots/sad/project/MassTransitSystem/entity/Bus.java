@@ -1,5 +1,8 @@
 package groots.sad.project.MassTransitSystem.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Bus {
 
     private String id;
@@ -9,6 +12,8 @@ public class Bus {
     private int averageSpeed;
     private int busTime;
     private int busAt;
+
+    private static final String MOVE_BUS = "move_bus";
 
     public Bus(String id, Route route, int passengerCapacity, int averageSpeed, int busAt) {
         this.id = id;
@@ -24,14 +29,6 @@ public class Bus {
         return id;
     }
 
-    public int getPassengerCapacity() {
-        return passengerCapacity;
-    }
-
-    public void setPassengerCapacity(int passengerCapacity) {
-        this.passengerCapacity = passengerCapacity;
-    }
-
     public int getRiders() {
         return riders;
     }
@@ -44,16 +41,8 @@ public class Bus {
         this.riders -= riders;
     }
 
-    public int getAverageSpeed() {
-        return averageSpeed;
-    }
-
     public void setAverageSpeed(int averageSpeed) {
         this.averageSpeed = averageSpeed;
-    }
-
-    public int getBusTime() {
-        return busTime;
     }
 
     public void setBusTime(int busTime) {
@@ -66,6 +55,11 @@ public class Bus {
 
     public void setBusAt(int busAt) {
         this.busAt = busAt % route.getStops().size();
+    }
+
+
+    public void setRiders(int riders) {
+        this.riders = riders;
     }
 
     private double distanceBetweenTwoStops() {
@@ -90,22 +84,48 @@ public class Bus {
         return "";
     }
 
-    public int computeBusCost() {
-        return 0;
+    public double computeBusCost(double kSpeed, double kCapacity) {
+        return kSpeed * averageSpeed + kCapacity * passengerCapacity;
     }
 
-    public void changeRoute() {
+    public void changeRoute(Route route, int nextStop) {
 
+        this.route = route;
+        busAt = (nextStop + route.getStops().size() - 1) % route.getStops().size();
+    }
+
+    public void setPassengerCapacity(int passengerCapacity) {
+        this.passengerCapacity = passengerCapacity;
+    }
+
+    public int getBusTime() {
+        return busTime;
     }
 
     public void moveNextStop() {
 
+        busTime += computeBusTravelTime();
         busAt = (busAt + 1) % route.getStops().size();
     }
 
-    public BusStop getNextStop() {
+    public BusStop getCurrentStop() {
 
-        return route.getNextStop(busAt);
+        return route.getCurrentStop(busAt);
+    }
+
+    public Event createNextMoveEvent() {
+        return new Event(busTime, MOVE_BUS, id);
+    }
+
+    public Map<String,String> computeDisplayInfo(){
+
+        Map<String, String> displayInfo = new HashMap<>();
+        displayInfo.put("bus_id",id);
+        displayInfo.put("current_stop",getCurrentStop().getId());
+        displayInfo.put("next_stop", route.getNextStop(busAt).getId());
+        displayInfo.put("travel_time", Integer.toString(computeBusTravelTime()));
+        displayInfo.put("riders", Integer.toString(riders));
+        return displayInfo;
     }
 
 }
