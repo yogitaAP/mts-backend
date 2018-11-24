@@ -44,7 +44,7 @@ public class BusManagementService {
             busesToBeProcessed.addAll(busManager.selectBusesToMove(events));
         }
 
-        Bus bus = busesToBeProcessed.getFirst();
+        Bus bus = busesToBeProcessed.removeFirst();
         busManager.moveBus(bus);
         processBusStateChangeEvents(bus);
         BusStop busStop = bus.getCurrentStop();

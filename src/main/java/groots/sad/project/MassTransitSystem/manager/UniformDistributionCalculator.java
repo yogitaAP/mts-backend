@@ -5,6 +5,6 @@ public class UniformDistributionCalculator {
     public static int generateRandomNumber(int lowBound,int highBound){
 
         // Temp logic we can change it later
-        return 20*(lowBound+highBound)/2;
+        return 10*(lowBound+highBound)/2;
     }
 }

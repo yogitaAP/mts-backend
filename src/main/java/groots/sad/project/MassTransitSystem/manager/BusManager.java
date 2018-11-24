@@ -111,7 +111,7 @@ public class BusManager {
         }
         if(routeId!=null){
             List<Route> routes = eventSimulator.getRoutes();
-            Route route = routes.stream().filter(route1 -> route1.equals(route1)).findFirst().get();
+            Route route = routes.stream().filter(route1 -> route1.getId().equals(routeId)).findFirst().get();
             bus.changeRoute(route,Integer.valueOf(nextStop));
         }
     }
