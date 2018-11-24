@@ -1,14 +1,26 @@
 var app = angular.module('app', ['ngRoute','ngResource']);
 app.config(function($routeProvider){
     $routeProvider
-        .when('/users',{
-            templateUrl: '/views/users.html',
-            controller: 'usersController'
+        .when('/buses',{
+            templateUrl: '/views/buses.html',
+            controller: 'busController'
         })
-        .when('/roles',{
-            templateUrl: '/views/roles.html',
-            controller: 'rolesController'
+        .when('/stops',{
+            templateUrl: '/views/stops.html',
+            controller: 'stopController'
         })
+        .when('/routes',{
+                    templateUrl: '/views/routes.html',
+                    controller: 'routeController'
+                })
+        .when('/efficiency',{
+                    templateUrl: '/views/efficiency.html',
+                    controller: 'efficiencyController'
+                })
+        .when('/info',{
+                    templateUrl: '/views/info.html',
+                    controller: 'infoController'
+                })
         .otherwise(
             { redirectTo: '/'}
         );
