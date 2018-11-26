@@ -173,7 +173,7 @@ public class EventSimulator {
                 event.setTime(history.getBusTime());
             }
         });
-        busManager.replay(history.getBusId(), history.getBusTime(), history.getBusRiders());
+        busManager.replay(history.getBusId(), history.getBusTime(), history.getBusRiders(), history.getBusAt());
     }
 
     public List<Route> getRoutes() {

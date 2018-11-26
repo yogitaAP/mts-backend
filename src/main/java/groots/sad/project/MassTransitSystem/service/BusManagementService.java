@@ -45,10 +45,10 @@ public class BusManagementService {
         }
 
         Bus bus = busesToBeProcessed.removeFirst();
+        addEventToHistory(bus, bus.getCurrentStop());
         busManager.moveBus(bus);
         processBusStateChangeEvents(bus);
         BusStop busStop = bus.getCurrentStop();
-        addEventToHistory(bus, busStop);
         PassengerManager.managePassengersArrivingOnStop(busStop);
         PassengerManager.updatePassengersLeaveBus(bus, busStop);
         PassengerManager.boardPassengersOnBus(bus, busStop);
@@ -71,7 +71,8 @@ public class BusManagementService {
         int busRiders = bus.getRiders();
         String stopId = stop.getId();
         int stopPassengers = stop.getWaitingPassenger();
-        History newHistory = new History(busId, busTime, busRiders, stopId, stopPassengers);
+        int busAt = bus.getBusAt();
+        History newHistory = new History(busId, busTime, busRiders, stopId, stopPassengers, busAt);
         history.push(newHistory);
     }
 

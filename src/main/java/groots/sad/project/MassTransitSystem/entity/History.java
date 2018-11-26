@@ -7,13 +7,15 @@ public class History {
     private int busRiders;
     private String busStopId;
     private int stopPassengers;
+    private int busAt;
 
-    public History(String busId,int busTime,int busRiders,String busStopId,int stopPassengers) {
+    public History(String busId,int busTime,int busRiders,String busStopId,int stopPassengers, int busAt) {
         this.busId = busId;
         this.busTime = busTime;
         this.busRiders = busRiders;
         this.busStopId = busStopId;
         this.stopPassengers = stopPassengers;
+        this.busAt = busAt;
     }
 
     public String getBusId() {
@@ -30,6 +32,9 @@ public class History {
     }
     public int getStopPassengers() {
         return stopPassengers;
+    }
+    public int getBusAt() {
+        return busAt;
     }
 
 }

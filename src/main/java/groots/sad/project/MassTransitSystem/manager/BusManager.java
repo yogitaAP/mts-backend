@@ -65,13 +65,14 @@ public class BusManager {
         buses.forEach(bus -> idToBusMap.put(bus.getId(), bus));
     }
 
-    public void replay(String busId,int busTime, int busRiders)
+    public void replay(String busId,int busTime, int busRiders, int busAt)
     {
         for (int i = 0; i < buses.size(); i++) {
             if(buses.get(i).getId().equals(busId) )
             {
                 buses.get(i).setBusTime(busTime);
                 buses.get(i).setRiders(busRiders);
+                buses.get(i).setBusAt(busAt);
             }
         }
     }
