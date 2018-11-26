@@ -21,6 +21,7 @@ public class EventSimulator {
     private static List<Event> eventQueue = new ArrayList<>();
     private static EventSimulator eventSimulator = new EventSimulator();
     private static int logicalTime;
+    private static String UPLOADED_FOLDER = System.getProperty("user.dir") + "/mtsfiles/";
 
     private static final String MOVE_BUS = "move_bus";
 
@@ -31,18 +32,16 @@ public class EventSimulator {
         routes = new ArrayList<>();
         eventQueue = new ArrayList<>();
         logicalTime = 0;
-        readData();
-        readPassengerFrequencyData();
     }
 
     public static EventSimulator getInstance(){
         return eventSimulator;
     }
 
-    private  static void readPassengerFrequencyData(){
+    public void readPassengerFrequencyData(String fileName){
         final String DELIMITER = ",";
         try {
-            File file = ResourceUtils.getFile("classpath:files/test_evening_distribution.txt");
+            File file = ResourceUtils.getFile(UPLOADED_FOLDER + fileName);
             Scanner takeCommand = new Scanner(file);
             String[] tokens;
             do {
@@ -51,6 +50,7 @@ public class EventSimulator {
                 final int [] intTokens = Arrays.stream(tokens).mapToInt(Integer::parseInt).toArray();
                 busStops.forEach(stop -> {
                     if(stop.getId().equals(Integer.toString(intTokens[0]))){
+                        System.out.println("saving piyush data"+Arrays.toString(intTokens));
                         stop.setrArriveHigh(intTokens[1]).setrArriveLow(intTokens[2]).setrOffHigh(intTokens[3])
                                 .setrOffLow(intTokens[4]).setrOnHigh(intTokens[5]).setrOnLow(intTokens[6])
                                 .setrDepartHigh(intTokens[7]).setrDepartLow(intTokens[8]);
@@ -64,11 +64,11 @@ public class EventSimulator {
         }
     }
 
-    private static void readData() {
+    public void readData(String fileName) {
 
         final String DELIMITER = ",";
         try {
-            File file = ResourceUtils.getFile("classpath:files/test0_instruction_demo.txt");
+            File file = ResourceUtils.getFile(UPLOADED_FOLDER+fileName);
             Scanner takeCommand = new Scanner(file);
             String[] tokens;
             do {
