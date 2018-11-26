@@ -52,7 +52,9 @@ public class BusStop {
     }
 
     public void passengersArriveAtStop(){
+
         this.waitingPassenger += UniformDistributionCalculator.generateRandomNumber(rArriveLow, rArriveHigh);
+        System.out.println("passengers arrived at the stop"+ waitingPassenger);
     }
 
     public void decreaseWaitingPassenger(int passenger){

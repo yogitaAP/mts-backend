@@ -50,7 +50,6 @@ public class EventSimulator {
                 final int [] intTokens = Arrays.stream(tokens).mapToInt(Integer::parseInt).toArray();
                 busStops.forEach(stop -> {
                     if(stop.getId().equals(Integer.toString(intTokens[0]))){
-                        System.out.println("saving piyush data"+Arrays.toString(intTokens));
                         stop.setrArriveHigh(intTokens[1]).setrArriveLow(intTokens[2]).setrOffHigh(intTokens[3])
                                 .setrOffLow(intTokens[4]).setrOnHigh(intTokens[5]).setrOnLow(intTokens[6])
                                 .setrDepartHigh(intTokens[7]).setrDepartLow(intTokens[8]);
@@ -144,6 +143,7 @@ public class EventSimulator {
     public void increaseLogicalTime(){
 
         logicalTime++;
+        System.out.println("logical time piyush" + logicalTime);
     }
 
     public void updateEvents(Event eventCreated) {

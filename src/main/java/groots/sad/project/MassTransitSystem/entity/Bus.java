@@ -77,6 +77,7 @@ public class Bus {
     public int computeBusTravelTime() {
 
         int travelTime = 1 + (((int) distanceBetweenTwoStops()) * 60 / averageSpeed);
+        System.out.println("travel time piyush"+travelTime);
         return travelTime;
     }
 
@@ -108,6 +109,10 @@ public class Bus {
         busAt = (busAt + 1) % route.getStops().size();
     }
 
+    public int getPassengerCapacity() {
+        return passengerCapacity;
+    }
+
     public BusStop getCurrentStop() {
 
         return route.getCurrentStop(busAt);
@@ -123,8 +128,9 @@ public class Bus {
         displayInfo.put("bus_id",id);
         displayInfo.put("current_stop",getCurrentStop().getId());
         displayInfo.put("next_stop", route.getNextStop(busAt).getId());
-        displayInfo.put("travel_time", Integer.toString(computeBusTravelTime()));
+        displayInfo.put("travel_time", Integer.toString(busTime));
         displayInfo.put("riders", Integer.toString(riders));
+        displayInfo.put("passengerCapacity",Integer.toString(passengerCapacity));
         return displayInfo;
     }
 
