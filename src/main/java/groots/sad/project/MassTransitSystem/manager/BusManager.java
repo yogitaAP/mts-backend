@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The responsibility of the class is to manage all the buses in the system.
+ */
 public class BusManager {
 
     private List<Bus> buses;
@@ -37,6 +40,11 @@ public class BusManager {
         bus.moveNextStop();
     }
 
+    /**
+     * The method will select the buses which can move at the given logical time.
+     * @param events events that can be processed at the given logical time.
+     * @return list of the buses which can move at the given logical time with the bus having short travel time at the front
+     */
     public List<Bus> selectBusesToMove(List<Event> events) {
 
         List<Bus> selectedBuses = new ArrayList<>();
@@ -86,6 +94,10 @@ public class BusManager {
         return bus.createNextMoveEvent();
     }
 
+    /**
+     * updates the bus info as provided by the user
+     * @param busInfo
+     */
     public void updateBusInfo(Map<String,String> busInfo){
 
         String busId = busInfo.get("busId");
@@ -115,5 +127,9 @@ public class BusManager {
             Route route = routes.stream().filter(route1 -> route1.getId().equals(routeId)).findFirst().get();
             bus.changeRoute(route,Integer.valueOf(nextStop));
         }
+    }
+
+    public void refresh(){
+        buses = new ArrayList<>();
     }
 }

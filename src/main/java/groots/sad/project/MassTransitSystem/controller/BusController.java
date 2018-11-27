@@ -1,4 +1,4 @@
-package groots.sad.project.MassTransitSystem.Controller;
+package groots.sad.project.MassTransitSystem.controller;
 
 import groots.sad.project.MassTransitSystem.entity.Bus;
 import groots.sad.project.MassTransitSystem.service.BusManagementService;

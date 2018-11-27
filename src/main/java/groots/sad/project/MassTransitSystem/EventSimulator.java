@@ -2,6 +2,7 @@ package groots.sad.project.MassTransitSystem;
 
 import groots.sad.project.MassTransitSystem.entity.*;
 import groots.sad.project.MassTransitSystem.manager.BusManager;
+import groots.sad.project.MassTransitSystem.manager.EventHistoryManager;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -146,7 +147,7 @@ public class EventSimulator {
         System.out.println("logical time piyush" + logicalTime);
     }
 
-    public void updateEvents(Event eventCreated) {
+    public void updateEventQueue(Event eventCreated) {
 
         List<Event> eventsToReAdd = eventQueue.stream().filter(event -> event.getTime() > logicalTime).collect(Collectors.toList());
         eventQueue.clear();
@@ -154,7 +155,7 @@ public class EventSimulator {
         eventQueue.add(eventCreated);
     }
 
-    public static void replay(History history){
+    public void replay(History history){
 
         busStops.forEach(stop -> {
 
@@ -178,5 +179,16 @@ public class EventSimulator {
 
     public List<Route> getRoutes() {
         return routes;
+    }
+
+    public void refresh() {
+
+        busStops = new ArrayList<>();
+        routes = new ArrayList<>();
+        eventQueue = new ArrayList<>();
+        logicalTime = 0;
+        busManager.refresh();
+        EventHistoryManager eventHistoryManager = EventHistoryManager.getInstance();
+        eventHistoryManager.refresh();
     }
 }

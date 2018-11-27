@@ -1,5 +1,8 @@
 package groots.sad.project.MassTransitSystem.entity;
 
+/**
+ * Stores the information of the move bus events which are executed
+ */
 public class History {
 
     private String busId;

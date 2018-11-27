@@ -4,12 +4,10 @@ import groots.sad.project.MassTransitSystem.EventSimulator;
 import groots.sad.project.MassTransitSystem.entity.Bus;
 import groots.sad.project.MassTransitSystem.entity.BusStop;
 import groots.sad.project.MassTransitSystem.entity.Event;
-import groots.sad.project.MassTransitSystem.entity.History;
 import groots.sad.project.MassTransitSystem.manager.BusManager;
-import groots.sad.project.MassTransitSystem.manager.PassengerManager;
 import groots.sad.project.MassTransitSystem.manager.EventHistoryManager;
+import groots.sad.project.MassTransitSystem.manager.PassengerManager;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -22,7 +20,6 @@ public class BusManagementService {
     private BusManager busManager;
     private LinkedList<Bus> busesToBeProcessed;
     private Map<String, LinkedList<Map<String, String>>> updateBusEvents;
-    Stack<History> history = new Stack<>();
 
 
     public BusManagementService() {
@@ -53,7 +50,7 @@ public class BusManagementService {
         PassengerManager.updatePassengersLeaveBus(bus, busStop);
         PassengerManager.boardPassengersOnBus(bus, busStop);
         PassengerManager.managePassengersDepartStop(busStop);
-        eventSimulator.updateEvents(busManager.createNextMoveBusEvent(bus));
+        eventSimulator.updateEventQueue(busManager.createNextMoveBusEvent(bus));
     }
 
     private void processBusStateChangeEvents(Bus bus) {
@@ -66,20 +63,14 @@ public class BusManagementService {
 
     private void addEventToHistory(Bus bus, BusStop stop) {
 
-        String busId = bus.getId();
-        int busTime = bus.getBusTime();
-        int busRiders = bus.getRiders();
-        String stopId = stop.getId();
-        int stopPassengers = stop.getWaitingPassenger();
-        int busAt = bus.getBusAt();
-        History newHistory = new History(busId, busTime, busRiders, stopId, stopPassengers, busAt);
-        history.push(newHistory);
+        EventHistoryManager eventHistoryManager = EventHistoryManager.getInstance();
+        eventHistoryManager.addEventToHistory(bus,stop);
     }
 
     public void replay(){
-        if(!CollectionUtils.isEmpty(history)) {
-            EventHistoryManager.replay(history.pop());
-        }
+
+        EventHistoryManager eventHistoryManager = EventHistoryManager.getInstance();
+        eventHistoryManager.replay();
     }
 
     public List<Bus> getAllBuses() {

@@ -8,8 +8,9 @@ import java.util.List;
 /**
  * The class is singleton class which will calculate the efficiency of the system.
  * The object instantiation is an eager instantiation to avoid concurrency issues.
+ * The class is responsible to calculate the efficiency of the system
  */
-public class SystemEfficiencyCalculator {
+public final class SystemEfficiencyCalculator {
 
     private double kSpeed;
     private double kCapacity;

@@ -7,7 +7,7 @@ import groots.sad.project.MassTransitSystem.validation.PassengerValidator;
 /**
  * This is class does not have any instance variable so making all methods static.
  */
-public class PassengerManager {
+public final class PassengerManager {
 
     public static void managePassengersArrivingOnStop(BusStop busStop){
 

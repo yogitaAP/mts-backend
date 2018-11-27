@@ -62,6 +62,10 @@ public class Bus {
         this.riders = riders;
     }
 
+    /**
+     * compute the distance between the current and the next stop
+     * @return
+     */
     private double distanceBetweenTwoStops() {
 
         BusStop currentStop = route.getCurrentStop(busAt);
@@ -74,6 +78,10 @@ public class Bus {
         return distance;
     }
 
+    /**
+     * compute the travel time taken to move from the current stop to the next stop
+     * @return
+     */
     public int computeBusTravelTime() {
 
         int travelTime = 1 + (((int) distanceBetweenTwoStops()) * 60 / averageSpeed);
