@@ -1,8 +1,24 @@
 <div class="section">
-    <h3>{{headingTitle}}</h3>
+    <h3></h3>
     <div>
-        <ul type="square">
-            <li ng-repeat="bus in buses">{{bus.name}}</li>
-        </ul>
+        <div class="stop" ng-repeat="stop in stops" style="left: {{ stop.location.left }}px; top: {{ stop.location.top }}px">
+            <span>
+                <img class="img" src="/images/bus_stop.png"></img>
+            </span>
+            <div class="bus" ng-repeat="bus in stop.busInfo" style="left: 0px; top: {{ bus.top }}px">
+                <div class="bus-info-wrapper">
+                    <img class="img" src="/images/bus.png"></img>
+                    <span class="bus-info">:{{ bus.bus_id }}</span>
+                    <span class="bus-info">{{ bus.riders }}</span>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="button-panel">
+        <button class="btn btn-primary" type="submit">Replay</button>
+        <button class="btn btn-primary" type="submit" ng-click="moveBus()">Move Bus</button>
     </div>
 </div>

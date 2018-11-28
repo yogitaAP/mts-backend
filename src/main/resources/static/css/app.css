@@ -38,3 +38,29 @@
     width:100%;
     height: 60px;
 }
+
+.img {
+    height: 40px;
+    width: 40px;
+}
+
+div.stop, div.bus {
+    position: absolute;
+    width: 60px;
+}
+
+.bus-info {
+    width: 20px;
+    position: relative;
+    display: inline-block;
+}
+
+#button-panel {
+    margin: auto;
+    width: 34%;
+}
+
+.bus-info-wrapper {
+    width: 200px;
+}
+

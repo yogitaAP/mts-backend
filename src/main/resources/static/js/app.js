@@ -28,15 +28,16 @@ app.directive('demoFileModel', function ($parse) {
 
 app.service('fileUploadService', function ($http, $q) {
 
-        this.uploadFileToUrl = function (file, uploadUrl) {
+        this.uploadFileToUrl = function (file, fileType, uploadUrl) {
             //FormData, object of key/value pair for form fields and values
             var fileFormData = new FormData();
-            fileFormData.append('files', file);
+            fileFormData.append('file', file);
+            fileFormData.append('fileType', fileType);
 
             var deffered = $q.defer();
             $http.post(uploadUrl, fileFormData, {
                 transformRequest: angular.identity,
-                headers: {'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryHAXPXgxACx2iCgdq'}
+                headers: {'Content-Type': undefined}
                 //'multipart/form-data;boundary="--ABC123Boundary"'
 
             }).success(function (response) {
@@ -56,14 +57,6 @@ app.config(function($routeProvider){
             templateUrl: '/views/buses.html',
             controller: 'busController'
         })
-        .when('/efficiency',{
-                    templateUrl: '/views/efficiency.html',
-                    controller: 'efficiencyController'
-                })
-        .when('/info',{
-                    templateUrl: '/views/info.html',
-                    controller: 'infoController'
-                })
         .when('/upload',{
                             templateUrl: '/views/upload.html',
                             controller: 'uploadController'
