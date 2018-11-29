@@ -1,14 +1,79 @@
 <div class="section">
-    <h3></h3>
-
-
-    <div>
-        <canvas id="demoCanvas" width="400" height="400"></canvas>
-    </div>
-
     <div id="button-panel">
-        <button class="btn btn-primary" type="submit" ng-click="plotStops()">Start Simulator</button>
-        <button class="btn btn-primary" type="submit">Replay</button>
-        <button class="btn btn-primary" type="submit" ng-click="moveBus()">Move Bus</button>
+        <button class="btn btn-primary" ng-class="{'disabled': !stops.length}" type="submit" ng-click="replay()">Replay</button>
+        <button class="btn btn-primary" ng-class="{'disabled': !stops.length}" type="submit" ng-click="moveBus()">Move Bus</button>
+
+            <!-- Trigger the modal with a button -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Start Simulator</button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Upload Files</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <div class="panel panel-default file-upload">
+                                    <div class="panel-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="myFileField">Select a file: </label>
+                                                <input type="file" demo-file-model="myFile"  class="form-control" id ="myFileField"/>
+                                            </div>
+                                            <button ng-click="uploadFile('systemInfo')" class = "btn btn-primary">Upload System Information File</button>
+                                        </form>
+                                        <form style="margin-top: 15px;">
+                                            <div class="form-group">
+                                                <label for="myFileField">Select a file: </label>
+                                                <input type="file" demo-file-model="myFile"  class="form-control" id ="myFileField2"/>
+                                            </div>
+                                            <button ng-click="uploadFile('passengerInfo')" class = "btn btn-primary">Upload Passenger Distribution File </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        <div id="system-info-wrapper">
+            <div id="bus-info-wrapper">
+                <div>Bus Info</div>
+                <ul style="padding: 0px;">
+                    <li class="bus-info" ng-repeat="bus in buses">
+                        <span style="background-color: {{ bus.color }}">Bus {{bus.display.bus_id}} at {{ bus.display.current_stop}} travelling to {{  bus.display.next_stop}} in time {{ bus.display.travel_time}} carrying {{ bus.display.riders}} riders</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="stop-info-wrapper">
+                <div>Stop Info</div>
+                <ul style="padding: 0px;">
+                    <li class="stop-info" ng-repeat="stop in stops">
+                        <span style="background-color: {{ stop.color }}">Stop {{ stop.id }} -  {{ stop.name }} | Transfer: {{ stop.transfersPassenger }} | Waiting: {{ stop.waitingPassenger }}</span>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
     </div>
+
+    <div id="canvas-wrapper">
+        <canvas id="demoCanvas" width="600" height="400"></canvas>
+    </div>
+
+
+
 </div>

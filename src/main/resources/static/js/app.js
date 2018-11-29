@@ -57,10 +57,6 @@ app.config(function($routeProvider){
             templateUrl: '/views/buses.html',
             controller: 'busController'
         })
-        .when('/upload',{
-            templateUrl: '/views/upload.html',
-            controller: 'uploadController'
-        })
         .otherwise(
             { redirectTo: '/'}
         );
