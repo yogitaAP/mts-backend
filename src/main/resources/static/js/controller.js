@@ -20,35 +20,16 @@ app.controller('busController', function($scope, $http) {
 
                 $http.get('http://localhost:8080//mts/bus/stops').
                                 then(function(response) {
+
                                     $scope.stops = response.data;
 
                                     $http.get('http://localhost:8080//mts/bus/displayinfo').then(function(displayResponse) {
                                         $scope.displayInfo = displayResponse.data;
+
                                         for(var i=0; i < response.data.length; ++i) {
-                                            var stop = response.data[i];
-                                            var longitude = stop.location.longitude;
-                                            var latitude = stop.location.latitude;
 
-                                            longitude = $scope.normalise(longitude);
-                                            latitude = $scope.normalise(latitude);
-
-                                            var top = ((i + 1) * 120) + (longitude * 100);
-                                            var left = 300 + (latitude * 100);
-                                            stop.location["top"] = top;
-                                            stop.location["left"] = left;
-                                            stop.busInfo = [];
-
-                                            $scope.displayInfo.forEach(function(displayData, index) {
-                                                if(displayData.current_stop == stop.id) {
-                                                    displayData["left"] = left;
-                                                    displayData["top"] = 50 + (10 * index);
-                                                    stop.busInfo.push(displayData);
-                                                }
-                                            });
                                         }
 
-                                        $scope.stops = response.data;
-                                        console.log("updated stop data " + $scope.stops);
 
                                     });
                                 });
@@ -58,6 +39,54 @@ app.controller('busController', function($scope, $http) {
     };
 
     $scope.loadData();
+
+    $scope.plotStops = function() {
+        var stops = $scope.stops;
+        var stopMap = {};
+
+        stops.forEach(function(eachStop) {
+            stopMap[eachStop.id] = eachStop;
+        });
+
+        stops = Object.values(stopMap);
+
+
+        var latitudes = [];
+        var longitudes = [];
+
+        for(var i=0; i< stops.length; ++i) {
+            var location = stops[i].location;
+            latitudes.push(location.latitude);
+            longitudes.push(location.longitude);
+        }
+
+        var minLat = Math.min.apply(null, latitudes);
+        var maxLat = Math.max.apply(null, latitudes);
+        var minLong = Math.min.apply(null, longitudes);
+        var maxLong = Math.max.apply(null, longitudes);
+        xRange = maxLat - minLat;
+        yRange = maxLong - minLong;
+
+
+        var stage = new createjs.Stage("demoCanvas");
+        for(var i=0; i<stops.length; ++i) {
+            var stopData = stops[i];
+            var stop = new createjs.Bitmap("/images/bus_stop.png");
+            stop.scaleX = 0.1;
+            stop.scaleY = 0.1;
+
+            stop.y = ((stopData.location.latitude - minLat) * 350) / xRange;
+            stop.x = ((stopData.location.longitude - minLong) * 350) / yRange;
+
+            console.log(stopData.id + " -- x --" + stop.x);
+            console.log(stopData.id + " -- y --" + stop.y);
+            stage.addChild(stop);
+
+        }
+
+        stage.update();
+
+    }
 
 
 
