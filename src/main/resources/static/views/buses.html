@@ -1,71 +1,160 @@
 <div class="section">
-    <div id="button-panel">
+    <div id="button-wrapper">
         <button class="btn btn-primary" ng-class="{'disabled': !stops.length}" type="submit" ng-click="replay()">Replay</button>
         <button class="btn btn-primary" ng-class="{'disabled': !stops.length}" type="submit" ng-click="moveBus()">Move Bus</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Start Simulator</button>
+        <button ng-class="{'disabled': !stops.length}" data-toggle="modal" data-target="#busModal" class= "btn btn-primary">Update Bus Details</button>
+        <button ng-class="{'disabled': !stops.length}" data-toggle="modal" data-target="#efficiencyModal" class= "btn btn-primary">Update System Constants</button>
+    </div>
 
-            <!-- Trigger the modal with a button -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Start Simulator</button>
+    <div id="default-panel" ng-class="{'enabled': !stops.length}">
+        No data available
+    </div>
+    <div id="info-wrapper">
+        <div id="button-panel" ng-class="{'disabled': !stops.length}">
+            <div class="headers">System Info</div>
+            <div class="info-pills">Logical time: {{ logicaltime }}</div>
+            <div class="info-pills">Efficiency: {{ efficiency }}</div>
 
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog">
+            <div class="headers">Bus Info</div>
+            <div id="system-info-wrapper">
+                <div id="bus-info-wrapper">
+                    <ul style="padding: 0px;">
+                        <li class="bus-info" ng-repeat="bus in buses">
+                            <span style="background-color: {{ bus.color }}">Bus {{bus.display.bus_id}} at {{ bus.display.current_stop}} travelling to {{  bus.display.next_stop}} in time {{ bus.display.travel_time}} carrying {{ bus.display.riders}} riders</span>
+                        </li>
+                    </ul>
+                </div>
 
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Upload Files</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div>
-                                <div class="panel panel-default file-upload">
-                                    <div class="panel-body">
-                                        <form>
-                                            <div class="form-group">
-                                                <label for="myFileField">Select a file: </label>
-                                                <input type="file" demo-file-model="myFile"  class="form-control" id ="myFileField"/>
-                                            </div>
-                                            <button ng-click="uploadFile('systemInfo')" class = "btn btn-primary">Upload System Information File</button>
-                                        </form>
-                                        <form style="margin-top: 15px;">
-                                            <div class="form-group">
-                                                <label for="myFileField">Select a file: </label>
-                                                <input type="file" demo-file-model="myFile"  class="form-control" id ="myFileField2"/>
-                                            </div>
-                                            <button ng-click="uploadFile('passengerInfo')" class = "btn btn-primary">Upload Passenger Distribution File </button>
-                                        </form>
+                <div class="headers">Stop Info</div>
+                <div id="stop-info-wrapper">
+                    <ul style="padding: 0px;">
+                        <li class="stop-info" ng-repeat="stop in stops">
+                            <span style="background-color: {{ stop.color }}">Stop {{ stop.id }} -  {{ stop.name }} | Transfer: {{ stop.transfersPassenger }} | Waiting: {{ stop.waitingPassenger }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Upload Files</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="panel panel-default file-upload">
+                            <div class="panel-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="myFileField">Select a file: </label>
+                                        <input type="file" demo-file-model="myFile"  class="form-control" id ="myFileField"/>
                                     </div>
-                                </div>
+                                    <button ng-click="uploadFile('systemInfo')" class = "btn btn-primary">Upload System Information File</button>
+                                </form>
+                                <form style="margin-top: 15px;">
+                                    <div class="form-group">
+                                        <label for="myFileField">Select a file: </label>
+                                        <input type="file" demo-file-model="myFile"  class="form-control" id ="myFileField2"/>
+                                    </div>
+                                    <button ng-click="uploadFile('passengerInfo')" class = "btn btn-primary">Upload Passenger Distribution File </button>
+                                </form>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
                     </div>
-
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
 
+        </div>
+    </div>
 
-        <div id="system-info-wrapper">
-            <div id="bus-info-wrapper">
-                <div>Bus Info</div>
-                <ul style="padding: 0px;">
-                    <li class="bus-info" ng-repeat="bus in buses">
-                        <span style="background-color: {{ bus.color }}">Bus {{bus.display.bus_id}} at {{ bus.display.current_stop}} travelling to {{  bus.display.next_stop}} in time {{ bus.display.travel_time}} carrying {{ bus.display.riders}} riders</span>
-                    </li>
-                </ul>
+    <div class="modal fade" id="busModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit Bus Attributes</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="panel panel-default file-upload">
+                            <div class="panel-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="busId">Bus Id : </label>
+                                        <input demo-file-model="busId" type="number" class="form-control" id="busId"/>
+                                        <label for="passengerCapacity">Passenger Capacity : </label>
+                                        <input demo-file-model="passengerCapacity" type="number" class="form-control" id="passengerCapacity"/>
+                                        <label for="route">Route Id: </label>
+                                        <input demo-file-model="route" type="number" class="form-control" id="route"/>
+                                        <label for="averagespeed">Average Speed : </label>
+                                        <input demo-file-model="speed" type="number" class="form-control" id="averagespeed"/>
+                                        <label for="nextstop">Next Stop : </label>
+                                        <input demo-file-model="nextstop" type="number" class="form-control" id="nextstop"/>
+                                    </div>
+                                    <button ng-click="updateBus()" class = "btn btn-primary">Update Bus Details </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div id="stop-info-wrapper">
-                <div>Stop Info</div>
-                <ul style="padding: 0px;">
-                    <li class="stop-info" ng-repeat="stop in stops">
-                        <span style="background-color: {{ stop.color }}">Stop {{ stop.id }} -  {{ stop.name }} | Transfer: {{ stop.transfersPassenger }} | Waiting: {{ stop.waitingPassenger }}</span>
-                    </li>
-                </ul>
-            </div>
+        </div>
+    </div>
 
+
+    <div class="modal fade" id="efficiencyModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit Efficiency Constants</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="panel panel-default file-upload">
+                            <div class="panel-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="kSpeed">kSpeed : </label>
+                                        <input demo-file-model="kSpeed" type="text" class="form-control" id="kSpeed"/>
+
+                                        <label for="kCapacity">kCapacity: </label>
+                                        <input demo-file-model="kCapacity" type="text" class="form-control" id="kCapacity"/>
+
+                                        <label for="kWaiting">kWaiting: </label>
+                                        <input demo-file-model="kWaiting" type="text" class="form-control" id="kWaiting"/>
+
+                                        <label for="kCombined">kCombined : </label>
+                                        <input demo-file-model="kCombined" type="text" class="form-control" id="kCombined"/>
+
+                                        <label for="kBuses">kBuses : </label>
+                                        <input demo-file-model="kBuses" type="text" class="form-control" id="kBuses"/>
+                                    </div>
+                                    <button ng-click="updateEfficiency()" class = "btn btn-primary">Update Efficiency Details </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
 
         </div>
     </div>

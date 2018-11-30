@@ -13,7 +13,7 @@ app.controller('busController', function($scope, fileUploadService, $http) {
      "#c66561",
      "#e87881",
      "#f2ad47",
-     "#ffd54f",
+     "#b1922e",
      "#099f34",
      "#1485c6",
      "#ffc108",
@@ -59,10 +59,22 @@ app.controller('busController', function($scope, fileUploadService, $http) {
                                     $scope.stopMap[display.current_stop]["busInfo"].push(display);
                             });
 
+
+
                         $scope.stops = Object.values($scope.stopMap);
 
-                        isPlot && $scope.plotStops();
+                        $http.get('http://localhost:8080//mts/systemefficiency/compute').then(function(efficiencyresponse) {
+                            $scope.efficiency = efficiencyresponse.data;
 
+                            $http.get('http://localhost:8080/mts/system/logicaltime').then(function(timeResponse) {
+                               $scope.logicaltime = timeResponse.data.logicalTime;
+
+                               $('#myModal').modal('hide');
+                               isPlot && $scope.plotStops();
+                            });
+
+
+                        });
                     });
                 });
 
@@ -164,23 +176,113 @@ app.controller('busController', function($scope, fileUploadService, $http) {
     }
 
      $scope.uploadFile = function (fileType) {
-                    var file = $scope.myFile;
-                    $scope.fileType = fileType;
-                    console.log(file);
-                    var uploadUrl = "http://localhost:8080//mts/files/upload", //Url of webservice/api/server
-                        promise = fileUploadService.uploadFileToUrl(file, fileType, uploadUrl);
+            var file = $scope.myFile;
+            $scope.fileType = fileType;
+            console.log(file);
 
-                    promise.then(function () {
-                        console.log("file uploaded");
-                        $.notify("Files uploaded successfully", "success");
-                        $('#myModal').modal('hide');
-                        $scope.loadData(true);
-                    }, function () {
-                        $.notify("An error has occurred", "error");
-                        $('#myModal').modal('hide');
-                        $scope.loadData(true);
-                    })
-                };
+            if(fileType == "systemInfo" && $scope.stops.length) {
+                $http.get('http://localhost:8080//mts/system/refresh').then(function(refreshResponse) {
+                            var uploadUrl = "http://localhost:8080//mts/files/upload", //Url of webservice/api/server
+                                            promise = fileUploadService.uploadFileToUrl(file, fileType, uploadUrl);
+
+                                        promise.then(function () {
+                                            console.log("file uploaded");
+                                            $.notify("Files uploaded successfully", "success");
+                                            $scope.loadData(true);
+                                        }, function () {
+                                            $.notify("An error has occurred", "error");
+                                            $scope.loadData(true);
+                                        })
+                        });
+
+            } else {
+                var uploadUrl = "http://localhost:8080//mts/files/upload", //Url of webservice/api/server
+                                promise = fileUploadService.uploadFileToUrl(file, fileType, uploadUrl);
+
+                            promise.then(function () {
+                                console.log("file uploaded");
+                                $.notify("Files uploaded successfully", "success");
+                                $scope.loadData(true);
+                            }, function () {
+                                $.notify("An error has occurred", "error");
+                                $scope.loadData(true);
+                            })
+
+            }
+
+
+     };
+
+     $scope.updateEfficiency = function() {
+         var data = {
+            "kSpeed": $scope.kSpeed,
+            "kCapacity": $scope.kCapacity,
+            "kWaiting": $scope.kWaiting,
+            "kCombined": $scope.kCombined,
+            "kBuses": $scope.kBuses
+        }
+
+
+        if(Object.keys(data).length) {
+            $http.post('http://localhost:8080//mts/systemefficiency/constants', data).then(function(response) {
+                $.notify("System data updated successfully", "success");
+                $('#efficiencyModal').modal('hide');
+
+            }, function() {
+                $.notify("An error has occurred", "error");
+            });
+        }
+     };
+
+
+     $scope.updateBus = function(attr) {
+        var data = {};
+
+        if($scope.passengerCapacity < 0 || $scope.passengerCapacity > 100) {
+            $.notify("Invalid passenger capacity", 'error');
+            return;
+        }
+        if($scope.speed < 0 || $scope.speed > 500) {
+            $.notify("Invalid passenger capacity", 'error');
+            return;
+        }
+        if($scope.buses[$scope.busId] == null) {
+            $.notify("Invalid bus id", 'error');
+            return;
+        }
+        if($scope.stopMap[$scope.nextstop] == null) {
+            $.notify("Invalid stop id", 'error');
+            return;
+        }
+
+        else {
+            data = {
+                        "passenger": $scope.passengerCapacity,
+                        "busId": $scope.busId,
+                        "speed": $scope.speed,
+                        "routeId": $scope.route,
+                        "nextStop": $scope.nextstop
+                    }
+        }
+
+        if(Object.keys(data).length) {
+            $http.post('http://localhost:8080//mts/bus/updateinfo', data).then(function(response) {
+                $.notify("Bus data updated successfully", "success");
+                $('#busModal').modal('hide');
+            }, function() {
+                $.notify("An error has occurred", "error");
+            });
+        }
+     };
+
+     $('#myModal').on('hide.bs.modal', function() {
+
+       if(!$scope.stops.length)
+         {
+            $.notify("Please upload system data files to proceed", "error");
+            return false;
+         }
+     });
 
 
 });

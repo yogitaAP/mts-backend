@@ -28,7 +28,7 @@ public class FileUploadService {
         }
         readDataFromFile(uploadFile, fileType);
         cleanTheDirectory();
-        return new ResponseEntity("Successfully uploaded - " + uploadFile.getOriginalFilename(), HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     private void saveUploadedFile(MultipartFile file) throws IOException {
