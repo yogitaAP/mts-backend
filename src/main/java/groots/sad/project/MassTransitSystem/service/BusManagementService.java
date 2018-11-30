@@ -33,15 +33,14 @@ public class BusManagementService {
 
         if (busesToBeProcessed.isEmpty()) {
             List<Event> events = eventSimulator.prepareEvents();
-            if (events.isEmpty()) {
-                System.out.println("No buses to be processed at this logical time");
+            while (events.isEmpty()) {
                 eventSimulator.increaseLogicalTime();
-                return;
+                events = eventSimulator.prepareEvents();
             }
             busesToBeProcessed.addAll(busManager.selectBusesToMove(events));
         }
-
         Bus bus = busesToBeProcessed.removeFirst();
+        System.out.println("Bus currently moving is :" + bus.getId());
         addEventToHistory(bus, bus.getCurrentStop());
         busManager.moveBus(bus);
         processBusStateChangeEvents(bus);

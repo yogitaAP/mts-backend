@@ -191,4 +191,8 @@ public class EventSimulator {
         EventHistoryManager eventHistoryManager = EventHistoryManager.getInstance();
         eventHistoryManager.refresh();
     }
+
+    public int getLogicalTime() {
+        return logicalTime;
+    }
 }
