@@ -13,7 +13,7 @@ import java.util.Map;
 public class BusController {
 
     @Autowired
-    BusManagementService busManagementService;
+    private BusManagementService busManagementService;
 
     @GetMapping("/move")
     public void moveBus(){
