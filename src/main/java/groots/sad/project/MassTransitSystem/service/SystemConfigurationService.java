@@ -3,6 +3,7 @@ package groots.sad.project.MassTransitSystem.service;
 import groots.sad.project.MassTransitSystem.EventSimulator;
 import groots.sad.project.MassTransitSystem.entity.Bus;
 import groots.sad.project.MassTransitSystem.entity.BusStop;
+import groots.sad.project.MassTransitSystem.entity.Route;
 import groots.sad.project.MassTransitSystem.manager.SystemEfficiencyCalculator;
 import org.springframework.stereotype.Service;
 
@@ -49,5 +50,9 @@ public class SystemConfigurationService {
 
     public void refresh(){
         eventSimulator.refresh();
+    }
+
+    public List<Route> getAllRoutes(){
+        return eventSimulator.getRoutes();
     }
 }
