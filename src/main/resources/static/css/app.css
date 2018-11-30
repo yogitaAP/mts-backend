@@ -7,8 +7,12 @@
     width: 10%;
 }
 .section{
-    margin-left: 15%;
-    float:left;
+   position: absolute;
+   top: 60px;
+   width: 100%;
+   padding-left: 10px;
+   padding-right: 10px;
+   background-color: #eee;
 }
 .photo{
     padding-right: 5px;
@@ -16,19 +20,16 @@
 
 #home {
     background-color: #e5ecef;
-    width: 15% !important;
+    width: 100% !important;
     position: absolute;
-    left: 0px;
     top: 60px;
-    bottom: 0px;
+    height: 10%;
 }
 
 .btn-primary {
-    margin-top: 30px;
-    margin-bottom: 30px;
-    background-color: transparent !important;
-    border-color: #2e6da4 !important;
-    color: rgba(0,0,0,.65) !important;
+    background-color: #563d7c !important;
+    border-color: #563d7c !important;
+    color: #ffffff !important;
 }
 
 .title-section {
@@ -49,18 +50,110 @@ div.stop, div.bus {
     width: 60px;
 }
 
-.bus-info {
-    width: 20px;
+.bus-info, .stop-info {
     position: relative;
     display: inline-block;
+    padding: 5px;
+    border-radius: 6px;
 }
 
-#button-panel {
-    margin: auto;
-    width: 34%;
+
+#button-panel.disabled {
+    display: none;
+}
+
+#default-panel {
+    display: none;
+}
+
+#default-panel.enabled {
+    display: block;
+}
+
+
+
+#system-info-wrapper {
+    width: 360px;
 }
 
 .bus-info-wrapper {
-    width: 200px;
+    float: left;
 }
+
+.file-upload {
+    border-color: #ddd;
+    width: 70%;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    color: #563d7c;
+    font-size: 18px;
+}
+
+.nav-link.active {
+    border-bottom: 2px solid #563d7c;
+    border-radius: 0px !important;
+}
+
+.btn {
+    min-width: 100px;
+}
+
+#canvas-wrapper {
+    width: 850px;
+    height: 650px;
+    border: 1px solid #b1adad;
+    float: right;
+    margin-right: 10px;
+    border-radius: 6px;
+}
+
+.bus-info, .stop-info {
+    list-style-type: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+}
+
+.bus-info > span {
+    padding: 5px;
+    border-radius: 6px;
+}
+
+.stop-info > span{
+    padding: 5px;
+    border-radius: 6px;
+}
+
+#button-wrapper {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.headers {
+    text-align: center;
+    border-bottom: 3px solid #ddd;
+    color: #666;
+}
+
+#bus-info-wrapper, #stop-info-wrapper {
+    max-height: 150px;
+    overflow-y: scroll;
+}
+
+#info-wrapper {
+    border: 1px solid #b1adad;
+    width: 380px;
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 6px;
+}
+
+.info-pills {
+    padding: 5px;
+    background-color: #ded3de;
+    border-radius: 6px;
+    margin-top: 5px;
+}
+
 

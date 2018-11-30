@@ -19,7 +19,10 @@ app.directive('demoFileModel', function ($parse) {
                 //Call apply on scope, it checks for value changes and reflect them on UI
                 scope.$apply(function () {
                     //set the model value
-                    modelSetter(scope, element[0].files[0]);
+                    if(element[0].files != null)
+                        modelSetter(scope, element[0].files[0]);
+                    else
+                        modelSetter(scope, element[0].value);
                 });
             });
         }
@@ -57,10 +60,6 @@ app.config(function($routeProvider){
             templateUrl: '/views/buses.html',
             controller: 'busController'
         })
-        .when('/upload',{
-                            templateUrl: '/views/upload.html',
-                            controller: 'uploadController'
-                        })
         .otherwise(
             { redirectTo: '/'}
         );
