@@ -27,4 +27,14 @@ public class SystemEfficiencyService {
         double systemEfficiency = systemEfficiencyCalculator.computeSystemEfficiency(buses,busStops);
         return systemEfficiency;
     }
+
+    public void setKConstants(double kSpeed,double kCapacity,double kWaiting, double kBuses, double kCombined){
+
+        SystemEfficiencyCalculator systemEfficiencyCalculator = SystemEfficiencyCalculator.getInstance();
+        systemEfficiencyCalculator.setkSpeed(kSpeed)
+                .setkCapacity(kCapacity)
+                .setkWaiting(kWaiting)
+                .setkBuses(kBuses)
+                .setkCombined(kCombined);
+    }
 }

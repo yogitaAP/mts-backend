@@ -10,7 +10,7 @@ import java.util.List;
  * The object instantiation is an eager instantiation to avoid concurrency issues.
  * The class is responsible to calculate the efficiency of the system
  */
-public final class SystemEfficiencyCalculator {
+public class SystemEfficiencyCalculator {
 
     private double kSpeed;
     private double kCapacity;
@@ -22,6 +22,11 @@ public final class SystemEfficiencyCalculator {
     private static SystemEfficiencyCalculator systemEfficiencyCalculator = new SystemEfficiencyCalculator();
 
     private SystemEfficiencyCalculator() {
+        kSpeed = 1.0;
+        kCapacity= 1.0;
+        kWaiting = 1.0;
+        kBuses = 1.0;
+        kCombined = 1.0;
     }
 
     public static SystemEfficiencyCalculator getInstance() {
