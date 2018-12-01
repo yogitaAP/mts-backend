@@ -163,12 +163,6 @@ public class EventSimulator {
                 stop.setWaitingPassenger(history.getStopPassengers());
             }
         });
-
-        for (int i = 0; i < eventQueue.size(); i++) {
-            if(eventQueue.get(i).getBusId().equals(history.getBusStopId()) ) {
-                eventQueue.get(i).setTime(history.getBusTime());
-            }
-        }
         eventQueue.forEach(event->{
             if(event.getBusId().equals(history.getBusId())){
                 event.setTime(history.getBusTime());
