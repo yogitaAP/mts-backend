@@ -19,7 +19,8 @@
             <div class="headers">Bus Info</div>
             <div id="system-info-wrapper">
                 <div id="bus-info-wrapper">
-                    <ul style="padding: 0px;">
+                    <i ng-if="equals({}, buses)" class="fa fa-refresh fa-spin" style="font-size:24px;color:#563d7c"></i>
+                    <ul ng-if="!equals({}, buses)" style="padding: 0px;">
                         <li class="bus-info" ng-repeat="bus in buses">
                             <span style="background-color: {{ bus.color }}">Bus {{bus.display.bus_id}} at {{ bus.display.current_stop}} reaching {{  bus.display.next_stop}} at logical time {{ bus.display.travel_time}} | {{ bus.display.riders}} riders</span>
                         </li>
