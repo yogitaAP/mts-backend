@@ -2,7 +2,7 @@
     <div id="button-wrapper">
         <button class="btn btn-primary" ng-class="{'disabled': !stops.length}" type="submit" ng-click="replay()">Replay</button>
         <button class="btn btn-primary" ng-class="{'disabled': !stops.length}" type="submit" ng-click="moveBus()">Move Bus</button>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Start Simulator</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Upload Files</button>
         <button ng-class="{'disabled': !stops.length}" data-toggle="modal" data-target="#busModal" class= "btn btn-primary">Update Bus Details</button>
         <button ng-class="{'disabled': !stops.length}" data-toggle="modal" data-target="#efficiencyModal" class= "btn btn-primary">Update System Constants</button>
     </div>
@@ -21,7 +21,7 @@
                 <div id="bus-info-wrapper">
                     <ul style="padding: 0px;">
                         <li class="bus-info" ng-repeat="bus in buses">
-                            <span style="background-color: {{ bus.color }}">Bus {{bus.display.bus_id}} at {{ bus.display.current_stop}} travelling to {{  bus.display.next_stop}} in time {{ bus.display.travel_time}} carrying {{ bus.display.riders}} riders</span>
+                            <span style="background-color: {{ bus.color }}">Bus {{bus.display.bus_id}} at {{ bus.display.current_stop}} reaching {{  bus.display.next_stop}} at logical time {{ bus.display.travel_time}} | {{ bus.display.riders}} riders</span>
                         </li>
                     </ul>
                 </div>
@@ -30,10 +30,20 @@
                 <div id="stop-info-wrapper">
                     <ul style="padding: 0px;">
                         <li class="stop-info" ng-repeat="stop in stops">
-                            <span style="background-color: {{ stop.color }}">Stop {{ stop.id }} -  {{ stop.name }} | Transfer: {{ stop.transfersPassenger }} | Waiting: {{ stop.waitingPassenger }}</span>
+                            <span style="background-color: {{ stop.color }}">Stop {{ stop.id }}:  {{ stop.name }} | Transfer: {{ stop.transfersPassenger }} | Waiting: {{ stop.waitingPassenger }}</span>
                         </li>
                     </ul>
                 </div>
+
+                <div class="headers">Route Info</div>
+                <div id="route-info-wrapper">
+                    <ul style="padding: 0px;">
+                        <li class="route-info" ng-repeat="route in routes">
+                            <span class="outer" style="background-color: {{ route.color }}">Route {{ route.id }}: <span ng-repeat="eachStop in route.stops">{{eachStop.id}} -></span></span>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </div>

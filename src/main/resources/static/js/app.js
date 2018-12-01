@@ -56,9 +56,9 @@ app.service('fileUploadService', function ($http, $q) {
 
 app.config(function($routeProvider){
     $routeProvider
-        .when('/buses',{
-            templateUrl: '/views/buses.html',
-            controller: 'busController'
+        .when('/app',{
+            templateUrl: '/views/app.html',
+            controller: 'appController'
         })
         .otherwise(
             { redirectTo: '/'}
