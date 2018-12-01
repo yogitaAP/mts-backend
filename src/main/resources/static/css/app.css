@@ -50,7 +50,7 @@ div.stop, div.bus {
     width: 60px;
 }
 
-.bus-info, .stop-info {
+.bus-info, .stop-info, .route-info {
     position: relative;
     display: inline-block;
     padding: 5px;
