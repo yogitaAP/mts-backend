@@ -21,6 +21,10 @@ public class FileUploadService {
 
     public ResponseEntity<?> uploadFile(MultipartFile uploadFile, String fileType) {
 
+        File directory = new File(UPLOADED_FOLDER);
+        if(!directory.exists()){
+            directory.mkdir();
+        }
         try {
             saveUploadedFile(uploadFile);
         } catch (IOException e) {
