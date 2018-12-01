@@ -42,20 +42,7 @@ public class EventHistoryManager {
         int stopPassengers = stop.getWaitingPassenger();
         int busAt = bus.getBusAt();
         History newHistory = new History(busId, busTime, busRiders, stopId, stopPassengers, busAt, logicalTime);
-        if(history.size() > 3)
-        {
-            Stack<History> copyHistory = new Stack<>();
-            copyHistory.push(history.pop());
-            copyHistory.push(history.pop());
-            history.pop();
-            history.push(copyHistory.pop());
-            history.push(copyHistory.pop());
-            history.push(newHistory);
-        }
-        else
-        {
-            history.push(newHistory);
-        }
+        history.push(newHistory);
     }
 
     public void refresh(){
