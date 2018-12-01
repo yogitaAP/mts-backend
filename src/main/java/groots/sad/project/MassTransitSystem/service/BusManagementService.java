@@ -41,7 +41,7 @@ public class BusManagementService {
         }
         Bus bus = busesToBeProcessed.removeFirst();
         System.out.println("Bus currently moving is :" + bus.getId());
-        addEventToHistory(bus, bus.getCurrentStop());
+        addEventToHistory(bus, bus.getNextStop());
         busManager.moveBus(bus);
         processBusStateChangeEvents(bus);
         BusStop busStop = bus.getCurrentStop();
