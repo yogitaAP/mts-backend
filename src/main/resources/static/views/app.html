@@ -63,18 +63,18 @@
                             <div class="panel-body">
                                 <form>
                                     <div class="form-group">
-                                        <label for="myFileField">Select a file: </label>
-                                        <input type="file" demo-file-model="myFile"  class="form-control" id ="myFileField"/>
+                                        <label for="systemFile">Select system data file: </label>
+                                        <input type="file" demo-file-model="systemFile"  class="form-control" id ="systemFile"/>
                                     </div>
-                                    <button ng-click="uploadFile('systemInfo')" class = "btn btn-primary">Upload System Information File</button>
                                 </form>
                                 <form style="margin-top: 15px;">
                                     <div class="form-group">
-                                        <label for="myFileField">Select a file: </label>
-                                        <input type="file" demo-file-model="myFile"  class="form-control" id ="myFileField2"/>
+                                        <label for="passengerFile">Select passenger data file: </label>
+                                        <input type="file" demo-file-model="passengerFile"  class="form-control" id ="passengerFile"/>
                                     </div>
-                                    <button ng-click="uploadFile('passengerInfo')" class = "btn btn-primary">Upload Passenger Distribution File </button>
                                 </form>
+
+                                <button ng-click="uploadFile()" class = "btn btn-primary">Upload Files </button>
                             </div>
                         </div>
                     </div>

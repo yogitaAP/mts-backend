@@ -203,40 +203,49 @@ app.controller('appController', function($scope, fileUploadService, $http) {
     }
 
      $scope.uploadFile = function (fileType) {
-            var file = $scope.myFile;
-            $scope.fileType = fileType;
-            console.log(file);
+            var systemFile = $scope.systemFile;
+            var passengerFile = $scope.passengerFile;
+            var systemFileType = "systemInfo";
+            var passengerFileType = "passengerInfo";
 
-            if(fileType == "systemInfo" && $scope.stops.length) {
-                $http.get($scope.refreshSystem).then(function(refreshResponse) {
-                            var uploadUrl = $scope.uploadFiles, //Url of webservice/api/server
-                                            promise = fileUploadService.uploadFileToUrl(file, fileType, uploadUrl);
-
-                                        promise.then(function () {
-                                            console.log("file uploaded");
-                                            $.notify("Files uploaded successfully", "success");
-                                            $scope.loadData(true);
-                                        }, function () {
-                                            $.notify("An error has occurred", "error");
-                                            $scope.loadData(true);
-                                        })
-                        });
-
+            if(systemFile == undefined) {
+                $.notify("Please upload system data file to proceed");
+                return;
             } else {
-                var uploadUrl = $scope.uploadFiles, //Url of webservice/api/server
-                                promise = fileUploadService.uploadFileToUrl(file, fileType, uploadUrl);
+                if(passengerFile == undefined) {
+                     $http.get($scope.refreshSystem).then(function(refreshResponse) {
+                        var uploadUrl = $scope.uploadFiles, //Url of webservice/api/server
+                                        promise = fileUploadService.uploadFileToUrl(systemFile, systemFileType, uploadUrl);
 
-                            promise.then(function () {
-                                console.log("file uploaded");
+                        promise.then(function () {
+                            $.notify("Files uploaded successfully", "success");
+                            $scope.loadData(true);
+                        }, function () {
+                            $scope.loadData(true);
+                        });
+                    });
+                } else {
+                    $http.get($scope.refreshSystem).then(function(refreshResponse) {
+                        var uploadUrl = $scope.uploadFiles, //Url of webservice/api/server
+                                        promise = fileUploadService.uploadFileToUrl(systemFile, systemFileType, uploadUrl);
+
+                        promise.then(function () {
+
+                            var uploadUrl2 = $scope.uploadFiles, //Url of webservice/api/server
+                                            promise2 = fileUploadService.uploadFileToUrl(passengerFile, passengerFileType, uploadUrl2);
+
+                            promise2.then(function () {
                                 $.notify("Files uploaded successfully", "success");
                                 $scope.loadData(true);
                             }, function () {
-                                $.notify("An error has occurred", "error");
                                 $scope.loadData(true);
-                            })
-
+                            });
+                        }, function () {
+                            $scope.loadData(true);
+                        });
+                    });
+                }
             }
-
 
      };
 
