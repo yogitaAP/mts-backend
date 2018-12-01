@@ -26,14 +26,14 @@ app.controller('busController', function($scope, fileUploadService, $http) {
     };
 
     $scope.loadData = function(isPlot) {
-        $http.get('http://localhost:8080//mts/bus/list').then(function(busResponse) {
+        $http.get('http://52.54.135.196:8080//mts/bus/list').then(function(busResponse) {
                 $scope.buses = {};
                 busResponse.data.forEach(function(bus) {
                     $scope.buses[bus.id] = bus;
                 });
 
 
-                $http.get('http://localhost:8080//mts/bus/stops').then(function(response) {
+                $http.get('http://52.54.135.196:8080//mts/bus/stops').then(function(response) {
 
                     $scope.stops = response.data;
                     $scope.stopMap = {};
@@ -47,7 +47,7 @@ app.controller('busController', function($scope, fileUploadService, $http) {
 
                     });
 
-                    $http.get('http://localhost:8080//mts/bus/displayinfo').then(function(displayResponse) {
+                    $http.get('http://52.54.135.196:8080//mts/bus/displayinfo').then(function(displayResponse) {
                         $scope.displayInfo = displayResponse.data;
                             $scope.displayInfo.forEach(function(display) {
                                     var busUpdatedData = $scope.buses[display.bus_id];
@@ -63,10 +63,10 @@ app.controller('busController', function($scope, fileUploadService, $http) {
 
                         $scope.stops = Object.values($scope.stopMap);
 
-                        $http.get('http://localhost:8080//mts/systemefficiency/compute').then(function(efficiencyresponse) {
+                        $http.get('http://52.54.135.196:8080//mts/systemefficiency/compute').then(function(efficiencyresponse) {
                             $scope.efficiency = efficiencyresponse.data;
 
-                            $http.get('http://localhost:8080/mts/system/logicaltime').then(function(timeResponse) {
+                            $http.get('http://52.54.135.196:8080/mts/system/logicaltime').then(function(timeResponse) {
                                $scope.logicaltime = timeResponse.data.logicalTime;
 
                                $('#myModal').modal('hide');
@@ -161,7 +161,7 @@ app.controller('busController', function($scope, fileUploadService, $http) {
     $scope.moveBus = function() {
         if(!$scope.stops.length)
             return false;
-        $http.get('http://localhost:8080//mts/bus/move').then(function(moveBusResponse) {
+        $http.get('http://52.54.135.196:8080//mts/bus/move').then(function(moveBusResponse) {
             $scope.loadData(true);
         });
     }
@@ -170,7 +170,7 @@ app.controller('busController', function($scope, fileUploadService, $http) {
     $scope.replay = function() {
         if(!$scope.stops.length)
             return false;
-        $http.get('http://localhost:8080//mts/bus/replay').then(function(moveBusResponse) {
+        $http.get('http://52.54.135.196:8080//mts/bus/replay').then(function(moveBusResponse) {
             $scope.loadData(true);
         });
     }
@@ -181,8 +181,8 @@ app.controller('busController', function($scope, fileUploadService, $http) {
             console.log(file);
 
             if(fileType == "systemInfo" && $scope.stops.length) {
-                $http.get('http://localhost:8080//mts/system/refresh').then(function(refreshResponse) {
-                            var uploadUrl = "http://localhost:8080//mts/files/upload", //Url of webservice/api/server
+                $http.get('http://52.54.135.196:8080//mts/system/refresh').then(function(refreshResponse) {
+                            var uploadUrl = "http://52.54.135.196:8080//mts/files/upload", //Url of webservice/api/server
                                             promise = fileUploadService.uploadFileToUrl(file, fileType, uploadUrl);
 
                                         promise.then(function () {
@@ -196,7 +196,7 @@ app.controller('busController', function($scope, fileUploadService, $http) {
                         });
 
             } else {
-                var uploadUrl = "http://localhost:8080//mts/files/upload", //Url of webservice/api/server
+                var uploadUrl = "http://52.54.135.196:8080//mts/files/upload", //Url of webservice/api/server
                                 promise = fileUploadService.uploadFileToUrl(file, fileType, uploadUrl);
 
                             promise.then(function () {
@@ -224,7 +224,7 @@ app.controller('busController', function($scope, fileUploadService, $http) {
 
 
         if(Object.keys(data).length) {
-            $http.post('http://localhost:8080//mts/systemefficiency/constants', data).then(function(response) {
+            $http.post('http://52.54.135.196:8080//mts/systemefficiency/constants', data).then(function(response) {
                 $.notify("System data updated successfully", "success");
                 $('#efficiencyModal').modal('hide');
 
@@ -266,7 +266,7 @@ app.controller('busController', function($scope, fileUploadService, $http) {
         }
 
         if(Object.keys(data).length) {
-            $http.post('http://localhost:8080//mts/bus/updateinfo', data).then(function(response) {
+            $http.post('http://52.54.135.196:8080//mts/bus/updateinfo', data).then(function(response) {
                 $.notify("Bus data updated successfully", "success");
                 $('#busModal').modal('hide');
             }, function() {
