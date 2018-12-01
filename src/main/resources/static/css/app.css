@@ -99,7 +99,7 @@ div.stop, div.bus {
 }
 
 #canvas-wrapper {
-    width: 850px;
+    width: 65%;
     height: 650px;
     border: 1px solid #b1adad;
     float: right;
@@ -107,21 +107,36 @@ div.stop, div.bus {
     border-radius: 6px;
 }
 
-.bus-info, .stop-info {
+.bus-info, .stop-info, .route-info {
     list-style-type: none;
     margin-top: 5px;
     margin-bottom: 5px;
 
 }
 
+.route-info > span.outer {
+    padding: 5px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: white;
+}
+
+.route-info span {
+    color: white;
+}
+
 .bus-info > span {
     padding: 5px;
     border-radius: 6px;
+    font-size: 12px;
+    color: white;
 }
 
 .stop-info > span{
     padding: 5px;
     border-radius: 6px;
+    font-size: 12px;
+    color: white;
 }
 
 #button-wrapper {
@@ -136,13 +151,13 @@ div.stop, div.bus {
 }
 
 #bus-info-wrapper, #stop-info-wrapper {
-    max-height: 150px;
+    max-height: 180px;
     overflow-y: scroll;
 }
 
 #info-wrapper {
     border: 1px solid #b1adad;
-    width: 380px;
+    width: 30%px;
     float: left;
     padding-left: 10px;
     padding-right: 10px;

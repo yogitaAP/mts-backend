@@ -1,9 +1,4 @@
-app.controller('usersController', function($scope, $http) {
-
-    $scope.headingTitle = "User List";
-});
-
-app.controller('busController', function($scope, fileUploadService, $http) {
+app.controller('appController', function($scope, fileUploadService, $http) {
 
      $scope.busColors =
      ["#81bbe4",
@@ -20,20 +15,36 @@ app.controller('busController', function($scope, fileUploadService, $http) {
      "#30d6c5",
      "#444444"]
 
+     $scope.host = "http://localhost:8080";
+     $scope.getBusList = $scope.host + "//mts/bus/list";
+     $scope.getStops = $scope.host + "//mts/bus/stops";
+     $scope.getDisplayInfo = $scope.host + "//mts/bus/displayinfo";
+     $scope.getSystemEfficiency = $scope.host + "//mts/systemefficiency/compute";
+     $scope.getLogicalTime = $scope.host + '//mts/system/logicaltime';
+     $scope.getRoutes = $scope.host + '//mts/system/routes';
+     $scope.moveBus = $scope.host + '//mts/bus/move';
+     $scope.replayBus = $scope.host + '//mts/bus/replay';
+     $scope.getRoutes = $scope.host + '//mts/system/routes';
+     $scope.refreshSystem = $scope.host + '//mts/system/refresh';
+     $scope.uploadFiles = $scope.host + '//mts/files/upload';
+     $scope.updateConstants = $scope.host + '//mts/systemefficiency/constants';
+     $scope.updateBusInfo = $scope.host + '//mts/bus/updateinfo';
+
+
     $scope.normalise = function(x) {
         p = (x.toExponential()).toString();
         return Number( p.substr(0,p.indexOf("e")));
     };
 
     $scope.loadData = function(isPlot) {
-        $http.get('http://localhost:8080//mts/bus/list').then(function(busResponse) {
+        $http.get($scope.getBusList).then(function(busResponse) {
                 $scope.buses = {};
                 busResponse.data.forEach(function(bus) {
                     $scope.buses[bus.id] = bus;
                 });
 
 
-                $http.get('http://localhost:8080//mts/bus/stops').then(function(response) {
+                $http.get($scope.getStops).then(function(response) {
 
                     $scope.stops = response.data;
                     $scope.stopMap = {};
@@ -47,7 +58,7 @@ app.controller('busController', function($scope, fileUploadService, $http) {
 
                     });
 
-                    $http.get('http://localhost:8080//mts/bus/displayinfo').then(function(displayResponse) {
+                    $http.get($scope.getDisplayInfo).then(function(displayResponse) {
                         $scope.displayInfo = displayResponse.data;
                             $scope.displayInfo.forEach(function(display) {
                                     var busUpdatedData = $scope.buses[display.bus_id];
@@ -63,17 +74,27 @@ app.controller('busController', function($scope, fileUploadService, $http) {
 
                         $scope.stops = Object.values($scope.stopMap);
 
-                        $http.get('http://localhost:8080//mts/systemefficiency/compute').then(function(efficiencyresponse) {
+                        $http.get($scope.getSystemEfficiency).then(function(efficiencyresponse) {
                             $scope.efficiency = efficiencyresponse.data;
 
-                            $http.get('http://localhost:8080/mts/system/logicaltime').then(function(timeResponse) {
+                            $http.get($scope.getLogicalTime).then(function(timeResponse) {
                                $scope.logicaltime = timeResponse.data.logicalTime;
 
-                               $('#myModal').modal('hide');
-                               isPlot && $scope.plotStops();
+                               $http.get($scope.getRoutes).then(function(routeReponse) {
+                                        $scope.routeMap = {};
+                                        $scope.routes = [];
+                                        routeReponse.data.forEach(function(routeVal) {
+                                            var randomColorRouteIndex = parseInt(routeVal.id);
+                                            randomColorRouteIndex = isNaN(randomColorRouteIndex) ? 0 :  (randomColorRouteIndex % 12);
+                                            routeVal["color"] = $scope.busColors[randomColorRouteIndex];
+                                            $scope.routeMap[routeVal.id] = routeVal;
+                                            $scope.routes.push(routeVal);
+                                        });
+
+                                        $('#myModal').modal('hide');
+                                        isPlot && $scope.plotStops();
+                                      });
                             });
-
-
                         });
                     });
                 });
@@ -128,12 +149,18 @@ app.controller('busController', function($scope, fileUploadService, $http) {
             stop.x = ((stopData.location.longitude - minLong) * 350) / yRange;
             stage.addChild(stop);
 
+            var stoptext = new createjs.Text(stopData.id, "16px Arial", stopData.color);
+            stoptext.x = stop.x + 20;
+            stoptext.y = stop.y + 18;
+
+            stage.addChild(stoptext);
+
             if(stops[i]["busInfo"].length) {
                 for(var j=0; j<stops[i]["busInfo"].length; ++j) {
                     var bus = new createjs.Bitmap("/images/bus.png");
                     bus.scaleX = 0.06;
                     bus.scaleY = 0.06;
-                    bus.x = stop.x + 70;
+                    bus.x = stop.x + 50;
                     bus.y = stop.y + (j * 20);
 
                     stage.addChild(bus);
@@ -145,7 +172,7 @@ app.controller('busController', function($scope, fileUploadService, $http) {
                     riders = "riders " + riders;
 
                     var color = $scope.buses[busId]["color"];
-                    var text = new createjs.Text(busId, "12px Arial", color);
+                    var text = new createjs.Text(busId, "14px Arial", color);
                     text.x = bus.x + 30;
                     text.y = bus.y + 10;
 
@@ -161,7 +188,7 @@ app.controller('busController', function($scope, fileUploadService, $http) {
     $scope.moveBus = function() {
         if(!$scope.stops.length)
             return false;
-        $http.get('http://localhost:8080//mts/bus/move').then(function(moveBusResponse) {
+        $http.get($scope.moveBus).then(function(moveBusResponse) {
             $scope.loadData(true);
         });
     }
@@ -170,7 +197,7 @@ app.controller('busController', function($scope, fileUploadService, $http) {
     $scope.replay = function() {
         if(!$scope.stops.length)
             return false;
-        $http.get('http://localhost:8080//mts/bus/replay').then(function(moveBusResponse) {
+        $http.get($scope.replayBus).then(function(moveBusResponse) {
             $scope.loadData(true);
         });
     }
@@ -181,8 +208,8 @@ app.controller('busController', function($scope, fileUploadService, $http) {
             console.log(file);
 
             if(fileType == "systemInfo" && $scope.stops.length) {
-                $http.get('http://localhost:8080//mts/system/refresh').then(function(refreshResponse) {
-                            var uploadUrl = "http://localhost:8080//mts/files/upload", //Url of webservice/api/server
+                $http.get($scope.refreshSystem).then(function(refreshResponse) {
+                            var uploadUrl = $scope.uploadFiles, //Url of webservice/api/server
                                             promise = fileUploadService.uploadFileToUrl(file, fileType, uploadUrl);
 
                                         promise.then(function () {
@@ -196,7 +223,7 @@ app.controller('busController', function($scope, fileUploadService, $http) {
                         });
 
             } else {
-                var uploadUrl = "http://localhost:8080//mts/files/upload", //Url of webservice/api/server
+                var uploadUrl = $scope.uploadFiles, //Url of webservice/api/server
                                 promise = fileUploadService.uploadFileToUrl(file, fileType, uploadUrl);
 
                             promise.then(function () {
@@ -224,7 +251,7 @@ app.controller('busController', function($scope, fileUploadService, $http) {
 
 
         if(Object.keys(data).length) {
-            $http.post('http://localhost:8080//mts/systemefficiency/constants', data).then(function(response) {
+            $http.post($scope.updateConstants, data).then(function(response) {
                 $.notify("System data updated successfully", "success");
                 $('#efficiencyModal').modal('hide');
 
@@ -238,35 +265,45 @@ app.controller('busController', function($scope, fileUploadService, $http) {
      $scope.updateBus = function(attr) {
         var data = {};
 
-        if($scope.passengerCapacity < 0 || $scope.passengerCapacity > 100) {
-            $.notify("Invalid passenger capacity", 'error');
-            return;
-        }
-        if($scope.speed < 0 || $scope.speed > 500) {
-            $.notify("Invalid passenger capacity", 'error');
-            return;
-        }
         if($scope.buses[$scope.busId] == null) {
             $.notify("Invalid bus id", 'error');
             return;
         }
-        if($scope.stopMap[$scope.nextstop] == null) {
+
+        if($scope.passengerCapacity != undefined && ($scope.passengerCapacity < 0 || $scope.passengerCapacity > 100)) {
+            $.notify("Invalid passenger capacity", 'error');
+            return;
+        }
+
+        if($scope.speed != undefined && ($scope.speed < 0 || $scope.speed > 500)) {
+            $.notify("Invalid passenger capacity", 'error');
+            return;
+        }
+
+
+
+        if($scope.nextStop != undefined && $scope.stopMap[$scope.nextstop] == null) {
             $.notify("Invalid stop id", 'error');
+            return;
+        }
+
+        if($scope.route != undefined && $scope.routeMap[$scope.route] == null) {
+            $.notify("Invalid route id", 'error');
             return;
         }
 
         else {
             data = {
-                        "passenger": $scope.passengerCapacity,
-                        "busId": $scope.busId,
-                        "speed": $scope.speed,
-                        "routeId": $scope.route,
-                        "nextStop": $scope.nextstop
-                    }
+                "passenger": $scope.passengerCapacity,
+                "busId": $scope.busId,
+                "speed": $scope.speed,
+                "routeId": $scope.route,
+                "nextStop": $scope.nextstop
+            }
         }
 
         if(Object.keys(data).length) {
-            $http.post('http://localhost:8080//mts/bus/updateinfo', data).then(function(response) {
+            $http.post($scope.updateBusInfo, data).then(function(response) {
                 $.notify("Bus data updated successfully", "success");
                 $('#busModal').modal('hide');
             }, function() {
