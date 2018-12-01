@@ -31,17 +31,18 @@ public class BusManagementService {
 
     public void moveBus() {
 
+        int logicalTime = eventSimulator.getLogicalTime();
         if (busesToBeProcessed.isEmpty()) {
-            List<Event> events = eventSimulator.prepareEvents();
-            while (events.isEmpty()) {
+            Event event = eventSimulator.prepareEvent();
+            while (event == null) {
                 eventSimulator.increaseLogicalTime();
-                events = eventSimulator.prepareEvents();
+                event = eventSimulator.prepareEvent();
             }
-            busesToBeProcessed.addAll(busManager.selectBusesToMove(events));
+            busesToBeProcessed.add(busManager.selectBusesToMove(event));
         }
         Bus bus = busesToBeProcessed.removeFirst();
         System.out.println("Bus currently moving is :" + bus.getId());
-        addEventToHistory(bus, bus.getNextStop());
+        addEventToHistory(bus, bus.getNextStop(),logicalTime);
         busManager.moveBus(bus);
         processBusStateChangeEvents(bus);
         BusStop busStop = bus.getCurrentStop();
@@ -60,10 +61,10 @@ public class BusManagementService {
         );
     }
 
-    private void addEventToHistory(Bus bus, BusStop stop) {
+    private void addEventToHistory(Bus bus, BusStop stop,int logicalTime) {
 
         EventHistoryManager eventHistoryManager = EventHistoryManager.getInstance();
-        eventHistoryManager.addEventToHistory(bus,stop);
+        eventHistoryManager.addEventToHistory(bus,stop,logicalTime);
     }
 
     public void replay(){

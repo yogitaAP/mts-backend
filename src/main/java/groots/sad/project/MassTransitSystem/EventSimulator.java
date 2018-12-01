@@ -133,23 +133,28 @@ public class EventSimulator {
         return busStops;
     }
 
-    public List<Event> prepareEvents() {
+    public Event prepareEvent() {
 
-        return eventQueue.stream()
+        List<Event> events = eventQueue.stream()
                 .filter(event -> event.getTime() == logicalTime)
                 .filter(event -> event.getType().equals(MOVE_BUS))
                 .collect(Collectors.toList());
+        if(events.isEmpty()){
+            return null;
+        }
+        else{
+            return events.get(0);
+        }
     }
 
     public void increaseLogicalTime(){
 
         logicalTime++;
-        System.out.println("logical time piyush" + logicalTime);
     }
 
     public void updateEventQueue(Event eventCreated) {
 
-        List<Event> eventsToReAdd = eventQueue.stream().filter(event -> event.getTime() > logicalTime).collect(Collectors.toList());
+        List<Event> eventsToReAdd = eventQueue.stream().filter(event -> !event.getBusId().equals(eventCreated.getBusId())).collect(Collectors.toList());
         eventQueue.clear();
         eventQueue.addAll(eventsToReAdd);
         eventQueue.add(eventCreated);
@@ -169,6 +174,7 @@ public class EventSimulator {
             }
         });
         busManager.replay(history.getBusId(), history.getBusTime(), history.getBusRiders(), history.getBusAt());
+        setLogicalTime(history.getLogicalTime());
     }
 
     public List<Route> getRoutes() {
@@ -188,5 +194,9 @@ public class EventSimulator {
 
     public int getLogicalTime() {
         return logicalTime;
+    }
+
+    private static void setLogicalTime(int logicalTime) {
+        EventSimulator.logicalTime = logicalTime;
     }
 }
