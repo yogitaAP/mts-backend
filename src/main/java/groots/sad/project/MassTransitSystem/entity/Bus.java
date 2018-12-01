@@ -126,6 +126,11 @@ public class Bus {
         return route.getCurrentStop(busAt);
     }
 
+    public BusStop getNextStop() {
+
+        return route.getNextStop(busAt);
+    }
+
     public Event createNextMoveEvent() {
         return new Event(busTime, MOVE_BUS, id);
     }
