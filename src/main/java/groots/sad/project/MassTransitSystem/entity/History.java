@@ -11,14 +11,16 @@ public class History {
     private String busStopId;
     private int stopPassengers;
     private int busAt;
+    private int logicalTime;
 
-    public History(String busId,int busTime,int busRiders,String busStopId,int stopPassengers, int busAt) {
+    public History(String busId,int busTime,int busRiders,String busStopId,int stopPassengers, int busAt,int logicalTime) {
         this.busId = busId;
         this.busTime = busTime;
         this.busRiders = busRiders;
         this.busStopId = busStopId;
         this.stopPassengers = stopPassengers;
         this.busAt = busAt;
+        this.logicalTime = logicalTime;
     }
 
     public String getBusId() {
@@ -40,4 +42,7 @@ public class History {
         return busAt;
     }
 
+    public int getLogicalTime() {
+        return logicalTime;
+    }
 }

@@ -27,13 +27,13 @@ public class EventHistoryManager {
 
     public void replay() {
 
-        if (!CollectionUtils.isEmpty(history)) {
+        if(!CollectionUtils.isEmpty(history)) {
             EventSimulator eventSimulator = EventSimulator.getInstance();
             eventSimulator.replay(history.pop());
         }
     }
 
-    public void addEventToHistory(Bus bus, BusStop stop) {
+    public void addEventToHistory(Bus bus, BusStop stop, int logicalTime) {
 
         String busId = bus.getId();
         int busTime = bus.getBusTime();
@@ -41,9 +41,8 @@ public class EventHistoryManager {
         String stopId = stop.getId();
         int stopPassengers = stop.getWaitingPassenger();
         int busAt = bus.getBusAt();
-        History newHistory = new History(busId, busTime, busRiders, stopId, stopPassengers, busAt);
-
-        if(history.size() >3)
+        History newHistory = new History(busId, busTime, busRiders, stopId, stopPassengers, busAt, logicalTime);
+        if(history.size() > 3)
         {
             Stack<History> copyHistory = new Stack<>();
             copyHistory.push(history.pop());

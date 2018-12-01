@@ -1,7 +1,6 @@
 package groots.sad.project.MassTransitSystem.manager;
 
 import groots.sad.project.MassTransitSystem.EventSimulator;
-import groots.sad.project.MassTransitSystem.comparator.LowRunningTimeComparator;
 import groots.sad.project.MassTransitSystem.entity.Bus;
 import groots.sad.project.MassTransitSystem.entity.Event;
 import groots.sad.project.MassTransitSystem.entity.Route;
@@ -40,21 +39,17 @@ public class BusManager {
         bus.moveNextStop();
     }
 
-    /**
-     * The method will select the buses which can move at the given logical time.
-     * @param events events that can be processed at the given logical time.
-     * @return list of the buses which can move at the given logical time with the bus having short travel time at the front
-     */
-    public List<Bus> selectBusesToMove(List<Event> events) {
 
-        List<Bus> selectedBuses = new ArrayList<>();
-        events.forEach(event -> {
-            Bus bus = idToBusMap.get(event.getBusId());
-            selectedBuses.add(bus);
-        });
-        LowRunningTimeComparator comparator = new LowRunningTimeComparator();
-        selectedBuses.sort(comparator);
-        return selectedBuses;
+    /**
+     * Select the bus to be moved based on the event which is processed
+     * @param event
+     * @return
+     */
+    public Bus selectBusesToMove(Event event) {
+
+
+        Bus bus = idToBusMap.get(event.getBusId());
+        return bus;
     }
 
     public void prepareBusStartTimeData(List<Event> events) {
@@ -67,6 +62,9 @@ public class BusManager {
         });
     }
 
+    /**
+     * prepare bus id to bus object map for efficient retrieval of bus objects.
+     */
     public void prepareIdToBusMap() {
 
         idToBusMap = new HashMap<>();
@@ -113,6 +111,14 @@ public class BusManager {
 
     }
 
+    /**
+     * Will update the bus state based on the bus update info
+     * @param bus
+     * @param passenger
+     * @param speed
+     * @param routeId
+     * @param nextStop
+     */
     private void updateInfo(Bus bus, String passenger, String speed, String routeId, String nextStop) {
 
         EventSimulator eventSimulator = EventSimulator.getInstance();
