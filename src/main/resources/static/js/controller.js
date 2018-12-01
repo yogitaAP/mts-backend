@@ -22,7 +22,7 @@ app.controller('appController', function($scope, fileUploadService, $http) {
      $scope.getSystemEfficiency = $scope.host + "//mts/systemefficiency/compute";
      $scope.getLogicalTime = $scope.host + '//mts/system/logicaltime';
      $scope.getRoutes = $scope.host + '//mts/system/routes';
-     $scope.moveBus = $scope.host + '//mts/bus/move';
+     $scope.getMoveBus = $scope.host + '//mts/bus/move';
      $scope.replayBus = $scope.host + '//mts/bus/replay';
      $scope.getRoutes = $scope.host + '//mts/system/routes';
      $scope.refreshSystem = $scope.host + '//mts/system/refresh';
@@ -188,7 +188,7 @@ app.controller('appController', function($scope, fileUploadService, $http) {
     $scope.moveBus = function() {
         if(!$scope.stops.length)
             return false;
-        $http.get($scope.moveBus).then(function(moveBusResponse) {
+        $http.get($scope.getMoveBus).then(function(moveBusResponse) {
             $scope.loadData(true);
         });
     }
