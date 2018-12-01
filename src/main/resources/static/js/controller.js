@@ -15,7 +15,7 @@ app.controller('appController', function($scope, fileUploadService, $http) {
      "#30d6c5",
      "#444444"]
 
-     $scope.host = "http://52.54.135.196:8080";
+     $scope.host = "http://34.226.212.18:8080";
      $scope.getBusList = $scope.host + "//mts/bus/list";
      $scope.getStops = $scope.host + "//mts/bus/stops";
      $scope.getDisplayInfo = $scope.host + "//mts/bus/displayinfo";
