@@ -285,7 +285,7 @@ app.controller('appController', function($scope, fileUploadService, $http) {
         }
 
         if($scope.speed != undefined && ($scope.speed < 0 || $scope.speed > 500)) {
-            $.notify("Invalid passenger capacity", 'error');
+            $.notify("Invalid speed", 'error');
             return;
         }
 
