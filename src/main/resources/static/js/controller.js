@@ -300,15 +300,17 @@ app.controller('appController', function($scope, fileUploadService, $http) {
             return;
         }
 
-        else {
-            data = {
-                "passenger": $scope.passengerCapacity,
-                "busId": $scope.busId,
-                "speed": $scope.speed,
-                "routeId": $scope.route,
-                "nextStop": $scope.nextstop
-            }
-        }
+        if($scope.passengerCapacity != undefined && !isNaN(parseInt($scope.passengerCapacity)))
+            data["passenger"] = $scope.passengerCapacity;
+        if($scope.busId != undefined && !isNaN(parseInt($scope.busId)))
+            data["busId"] = $scope.busId;
+        if($scope.speed != undefined && !isNaN(parseInt($scope.speed)))
+            data["speed"] = $scope.speed;
+        if($scope.route != undefined && !isNaN(parseInt($scope.route)))
+            data["routeId"] = $scope.route;
+        if($scope.nextstop != undefined && !isNaN(parseInt($scope.nextstop)))
+            data["nextStop"] = $scope.nextstop;
+
 
         if(Object.keys(data).length) {
             $http.post($scope.updateBusInfo, data).then(function(response) {
